@@ -9,12 +9,10 @@ import Home from './pages/Home.jsx'; // This remains your dashboard
 import Login from './pages/Login.jsx';
 import EmailVerify from './pages/EmailVerify.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
-import PlantAvatarTest from './pages/PlantAvatarTest.jsx';
 import PlantsDashboard from './components/PlantsDashboard';
 import PlantDetail from './pages/PlantDetail';
 import './styles/designSystem.css';
 import './App.css';
-import PlantAvatarShowcase from './components/PlantAvatarShowcase';
 import PlantConversation from './components/PlantConversation';
 import EnhancedPlantGallery from './components/PlantGallery';
 import AddPlantFlow from './components/AddPlant/AddPlantFlow';
@@ -24,10 +22,10 @@ import ProfilePage from './components/ProfilePage';
 import ProfileSettingsPage from './pages/ProfileSettingsPage';
 import RewardsPage from './pages/RewardsPage';
 import LandingPage from './pages/LandingPage.jsx'; // Import the new landing page
+import DiseaseDetection from './pages/DiseaseDetection.jsx';
 
 // Import new Community components
 import CommunityHub from './pages/CommunityHub.jsx';
-import CommunityPage from './pages/CommunityPage.jsx'; // No direct route to the template anymore
 import AppleCommunity from './pages/CommunityPages/AppleCommunity.jsx';
 import CornCommunity from './pages/CommunityPages/CornCommunity.jsx';
 import RiceCommunity from './pages/CommunityPages/RiceCommunity.jsx';
@@ -47,7 +45,6 @@ import ChatNavigation from './components/Navigation/ChatNavigation.jsx';
 import CommunityNavigation from './components/Navigation/CommunityNavigation.jsx';
 
 // Page components
-const SchedulePage = () => <div>Schedule Page</div>;
 const PlantsPage = () => <PlantsDashboard />;
 
 // Animated page transitions
@@ -95,21 +92,24 @@ function App() {
                     <RewardToast />
                     <Routes>
                         {/* Public landing page */}
-                        <Route path="/" element={
+                        
+                        {/* <Route path="/" element={
                             <PageTransition>
                                 <LandingPage />
                             </PageTransition>
-                        } />{/* Auth routes - no layout */}
+                        } /> */}
+
+                        {/* Auth routes - no layout */}
                         <Route path="/login" element={
                             <PageTransition>
                                 <Login />
                             </PageTransition>
                         } />
-                        <Route path="/emotion" element={
+                        {/* <Route path="/emotion" element={
                             <PageTransition>
                                 <Emotion />
                             </PageTransition>
-                        } />
+                        } /> */}
                         <Route path="/email-verify" element={
                             <PageTransition>
                                 <EmailVerify />
@@ -144,29 +144,14 @@ function App() {
                                     <AddPlantFlow />
                                 </PageTransition>
                             } />
-                            <Route path="/plant-avatars" element={
-                                <PageTransition>
-                                    <PlantAvatarTest />
-                                </PageTransition>
-                            } />
                             <Route path="/notifications" element={
                                 <PageTransition>
                                     <NotificationsPage />
                                 </PageTransition>
                             } />
-                            <Route path="/schedule" element={
-                                <PageTransition>
-                                    <SchedulePage />
-                                </PageTransition>
-                            } />
                             <Route path="/profile" element={
                                 <PageTransition>
                                     <ProfilePage />
-                                </PageTransition>
-                            } />
-                            <Route path="/avatars" element={
-                                <PageTransition>
-                                    <PlantAvatarShowcase />
                                 </PageTransition>
                             } />
                             <Route path="/gallery" element={
@@ -211,6 +196,11 @@ function App() {
                             <Route path="/health" element={
                                 <PageTransition>
                                     <PlantHealthCheck />
+                                </PageTransition>
+                            } />
+                            <Route path="/disease" element={
+                                <PageTransition>
+                                    <DiseaseDetection />
                                 </PageTransition>
                             } />
 

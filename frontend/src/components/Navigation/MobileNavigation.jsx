@@ -21,10 +21,9 @@ const MobileNavigation = () => {
       ), 
       label: "Notifications" 
     },
-    { path: "/plant-avatars", icon: <ScanFace size={20} />, label: "Avatar" },
-    { path: "/schedule", icon: <Calendar size={20} />, label: "Schedule" },
     { path: "/profile", icon: <User size={20} />, label: "Profile" },
-    { path: "/health", icon: <BriefcaseMedical size={20} />, label: "Health" }
+    { path: "/health", icon: <BriefcaseMedical size={20} />, label: "Health" },
+    { path: "/disease", icon: <BriefcaseMedical size={20} />, label: "Disease Detection" }
   ];
 
   return (

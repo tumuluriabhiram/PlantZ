@@ -1,13 +1,15 @@
 //AppContext.jsx
 import { createContext } from "react";
-import React, {useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import {toast}  from 'react-toastify'
 import axios from 'axios';
+import { useLocation } from "react-router-dom";
 
 export const AppContent = createContext()
 
 export const AppContextProvider = (props) => {
 
+  const location = useLocation();
 
   axios.defaults.withCredentials = true;
  
@@ -45,8 +47,10 @@ const getAuthState = async () => {
 }
 
 useEffect(()=>{
-  getAuthState();
-},[])
+  if (location.pathname !== '/dashboard') {
+    getAuthState();
+  }
+},[location.pathname])
 
   
   const value = {

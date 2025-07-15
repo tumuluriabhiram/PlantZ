@@ -1,5 +1,5 @@
 // src/components/Navigation/DesktopNavigation.jsx
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, Leaf, Bell, Calendar, User, Plus, BriefcaseMedical, ScanFace } from 'lucide-react';
 import NotificationBadge from '../Notifications/NotificationsBadge.jsx';
@@ -10,10 +10,10 @@ const DesktopNavigation = () => {
   const { unreadCount } = useNotifications();
   const { userData } = useContext(AppContent);
   const navItems = [
-    { path: (userData ? '/dashboard' : '/'), icon: <Home size={20} />, label: "Home" },
-    { path: "/plants", icon: <Leaf size={20} />, label: "Plants" },
+    { path: '/dashboard', icon: <Home size={20} />, label: "Home" },
+    { path: userData?"/plants":'/login', icon: <Leaf size={20} />, label: "Plants" },
     {
-      path: "/notifications",
+      path: userData?"/notifications":'/login',
       icon: (
         <div className="relative">
           <Bell size={20} />
@@ -22,10 +22,9 @@ const DesktopNavigation = () => {
       ),
       label: "Notifications"
     },
-    { path: "/plant-avatars", icon: <ScanFace size={20} />, label: "Avatar" },
-    { path: "/schedule", icon: <Calendar size={20} />, label: "Schedule" },
-    { path: "/profile", icon: <User size={20} />, label: "Profile" },
-    { path: "/health", icon: <BriefcaseMedical size={20} />, label: "Health" }
+    { path: userData?"/profile":'/login', icon: <User size={20} />, label: "Profile" },
+    { path: "/health", icon: <BriefcaseMedical size={20} />, label: "Stress Detection" },
+    { path: "/disease", icon: <BriefcaseMedical size={20} />, label: "Disease Detection" }
   ];
 
   return (

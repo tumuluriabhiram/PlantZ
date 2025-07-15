@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   const handleGetStarted = () => {
-    navigate('/plants'); // Or whatever route you want the button to link to
+    navigate(userData?'/plants':'/login'); 
   };
 
   return (

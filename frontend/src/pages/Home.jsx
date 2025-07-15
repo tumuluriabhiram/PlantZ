@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from '../components/Header.jsx';
 import Emotion from './Emotion.jsx';
 
@@ -21,13 +20,13 @@ const Home = () => {
 
       {/* Decorative elements */}
       <div className="fixed bottom-0 left-0 w-32 h-32 opacity-70 z-0 animate-pulse-slow">
-        <div className="w-full h-full bg-plant-green-light rounded-full blur-xl animate-plant-grow"></div>
+        <div className="w-full h-full bg-plant-green-light rounded-full blur-xl animate-plant-grow" />
       </div>
       <div className="fixed top-1/4 right-10 w-20 h-20 opacity-50 z-0 animate-pulse-slow">
-        <div className="w-full h-full bg-accent-yellow rounded-full blur-xl animate-plant-wiggle"></div>
+        <div className="w-full h-full bg-accent-yellow rounded-full blur-xl animate-plant-wiggle" />
       </div>
       
-      <div className="fixed bottom-10 right-10 text-4xl animate-plant-grow text-accent-yellow"></div>
+      <div className="fixed bottom-10 right-10 text-4xl animate-plant-grow text-accent-yellow" />
     </div>
   );
 };
