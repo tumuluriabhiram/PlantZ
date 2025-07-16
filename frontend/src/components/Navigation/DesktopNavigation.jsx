@@ -35,9 +35,9 @@ const DesktopNavigation = () => {
       </div>
 
       <nav className="mt-2">
-        {navItems.map((item) => (
+        {navItems.map((item, index) => (
           <NavLink
-            key={item.path}
+            key={index}
             to={item.path}
             className={({ isActive }) =>
               `flex items-center py-3 px-6 ${isActive

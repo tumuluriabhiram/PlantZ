@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PlantTypeSelection from './PlantTypeSelection';
 import PlantDetailsForm from './PLantDetailsForm';
-import AvatarCustomization from './AvatarCustomization';
 import SuccessConfirmation from './SuccessConfirmation';
 import ProgressIndicator from './ProgressIndicator';
 import { usePlants } from '../../context/PlantContext';
@@ -22,7 +21,6 @@ const AddPlantFlow = () => {
   } = usePlants();
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [isQuickAdd, setIsQuickAdd] = useState(false);
   const [formData, setFormData] = useState({
     plantType: null,
     nickname: '',
@@ -33,17 +31,14 @@ const AddPlantFlow = () => {
     wateringFrequency: 'weekly',
     sunlightExposure: 'partial',
     fertilizationSchedule: 'monthly',
-    notes: '',
-    avatarVariant: 1,
-    avatarColor: 'default',
-    avatarFile: null
+    notes: ''
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  const totalSteps = isQuickAdd ? 2 : 3;
+  const totalSteps = 3;
 
   useEffect(() => {
     if (plantTypes.length === 0) {
@@ -67,13 +62,6 @@ const AddPlantFlow = () => {
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
-    }
-  };
-
-  const toggleQuickAdd = () => {
-    setIsQuickAdd(!isQuickAdd);
-    if (!isQuickAdd && currentStep === 3) {
-      setCurrentStep(2);
     }
   };
 
@@ -135,7 +123,6 @@ const AddPlantFlow = () => {
           'Authorization': `Bearer ${token}`
         }
       })
-      .then(response => console.log("aryan",response.data))
       .catch(error => console.error('Full error:', error));
 
       if (!token) {
@@ -151,7 +138,6 @@ const AddPlantFlow = () => {
 
       const plantData = {
         ...formData,
-        isQuickAdd,
         plantType: formData.plantType
       };
 
@@ -209,21 +195,8 @@ const AddPlantFlow = () => {
             formData={formData}
             onChange={(field, value) => updateFormData({ [field]: value })}
             errors={errors}
-            onToggleQuickAdd={toggleQuickAdd}
-            isQuickAdd={isQuickAdd}
-          />
-        );
-      case 3:
-        return (
-          <AvatarCustomization
-            plantType={formData.plantType}
-            selectedVariant={formData.avatarVariant}
-            selectedColor={formData.avatarColor}
-            onSelectVariant={(variant) => updateFormData({ avatarVariant: variant })}
-            onSelectColor={(color) => updateFormData({ avatarColor: color })}
-            onFileSelect={(file) => updateFormData({ avatarFile: file })}
-          />
-        );
+          />);
+
       default:
         return null;
     }
@@ -236,24 +209,6 @@ const AddPlantFlow = () => {
   return (
     <div className="add-plant-container max-w-2xl mx-auto p-6">
       <h1 className="text-3xl font-bold text-green-800 mb-6">Add a New Plant</h1>
-
-      <div className="quick-add-toggle mb-4">
-        <label className="flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            checked={isQuickAdd}
-            onChange={toggleQuickAdd}
-            className="form-checkbox h-5 w-5 text-green-600"
-            disabled={isSubmitting}
-          />
-          <span className="ml-2 text-gray-700">Quick Add Mode</span>
-        </label>
-        <p className="text-sm text-gray-500 mt-1">
-          {isQuickAdd
-            ? "Skip avatar customization for faster setup"
-            : "Enable for quicker plant setup (skips avatar customization)"}
-        </p>
-      </div>
 
       <ProgressIndicator
         currentStep={currentStep}
@@ -268,11 +223,13 @@ const AddPlantFlow = () => {
         <div className="error-message text-red-500 mb-4 text-center">{submitError}</div>
       )}
 
+      {/* Bottom */}
       <div className="flex justify-between mt-8">
         <button
           onClick={handleBack}
           disabled={currentStep === 1 || isSubmitting}
-          className={`px-6 py-2 rounded-lg ${currentStep === 1 || isSubmitting
+          className={`px-6 py-2 rounded-lg 
+            ${currentStep === 1 || isSubmitting
             ? 'bg-gray-300 cursor-not-allowed'
             : 'bg-gray-200 hover:bg-gray-300'
             }`}
@@ -283,7 +240,8 @@ const AddPlantFlow = () => {
         <button
           onClick={handleNext}
           disabled={isSubmitting || contextLoading}
-          className={`px-6 py-2 rounded-lg text-white ${isSubmitting || contextLoading
+          className={`px-6 py-2 rounded-lg text-white 
+            ${isSubmitting || contextLoading
             ? 'bg-green-400 cursor-not-allowed'
             : 'bg-green-600 hover:bg-green-700'
             }`}

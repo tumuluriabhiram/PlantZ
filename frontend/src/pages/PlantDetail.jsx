@@ -74,7 +74,6 @@ const PlantDetail = () => {
       setPlant(response.data.data);
       console.log(plant);
       
-
       // Set success message
       const messages = {
         water: "Ahh, thank you for watering me! I feel refreshed now.",
@@ -210,32 +209,32 @@ const PlantDetail = () => {
             {/* Quick action buttons */}
             <div className="grid grid-cols-2 gap-3 mt-4">
               <ActionButton
-                icon={<FaTint className="text-blue-500" />}
+                icon={<FaTint />}
                 label="Water"
                 onClick={() => handleCareAction('water')}
                 loading={actionLoading}
-                colorClass="bg-blue-500 hover:bg-blue-600"
+                colorClass="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700"
               />
               <ActionButton
-                icon={<FaCloudSun className="text-yellow-500" />}
+                icon={<FaCloudSun />}
                 label="Sunlight"
                 onClick={() => handleCareAction('sunlight')}
                 loading={actionLoading}
-                colorClass="bg-yellow-500 hover:bg-yellow-600"
+                colorClass="bg-gradient-to-r from-amber-400 to-amber-600 hover:from-amber-500 hover:to-amber-700"
               />
               <ActionButton
-                icon={<FaSeedling className="text-green-500" />}
+                icon={<FaSeedling />}
                 label="Fertilize"
                 onClick={() => handleCareAction('fertilize')}
                 loading={actionLoading}
-                colorClass="bg-green-500 hover:bg-green-600"
+                colorClass="bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700"
               />
               <ActionButton
-                icon={<FaThermometerHalf className="text-red-500" />}
+                icon={<FaThermometerHalf />}
                 label="Temperature"
                 onClick={() => handleCareAction('temperature')}
                 loading={actionLoading}
-                colorClass="bg-red-500 hover:bg-red-600"
+                colorClass="bg-gradient-to-r from-rose-400 to-rose-600 hover:from-rose-500 hover:to-rose-700"
               />
             </div>
           </motion.div>
@@ -356,10 +355,10 @@ const ActionButton = ({ icon, label, onClick, loading, colorClass }) => (
   <button
     onClick={onClick}
     disabled={loading}
-    className={`${colorClass} text-white py-2 px-3 rounded-lg flex flex-col items-center justify-center gap-1 transition-colors ${loading ? 'opacity-70' : ''}`}
+    className={`${colorClass} text-white py-3 px-4 rounded-lg flex flex-col items-center justify-center gap-2 transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
   >
-    <span className="text-xl">{icon}</span>
-    <span className="text-xs">{label}</span>
+    <span className="text-2xl">{icon}</span>
+    <span className="text-xs font-medium tracking-wide">{label}</span>
   </button>
 );
 

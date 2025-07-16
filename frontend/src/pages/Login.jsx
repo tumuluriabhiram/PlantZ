@@ -14,38 +14,6 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [turnstileToken, setTurnstileToken] = useState('');
-    const [passwordStrength, setPasswordStrength] = useState({
-        length: false,
-        uppercase: false,
-        lowercase: false,
-        number: false,
-        special: false,
-    });
-
-    const checkPasswordStrength = (password) => {
-        const length = password.length >= 6;
-        const uppercase = /[A-Z]/.test(password);
-        const lowercase = /[a-z]/.test(password);
-        const number = /[0-9]/.test(password);
-        const special = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-        setPasswordStrength({ length, uppercase, lowercase, number, special });
-    };
-
-    const getPasswordStrengthText = () => {
-        const { length, uppercase, lowercase, number, special } = passwordStrength;
-        const fulfilled = [length, uppercase, lowercase, number, special].filter(Boolean).length;
-
-        if (fulfilled === 0) return '';
-        if (fulfilled < 3) return 'Weak password';
-        if (fulfilled < 5) return 'Medium password';
-        return 'Strong password';
-    };
-
-    const isPasswordValid = () => {
-        const { length, uppercase, lowercase, number, special } = passwordStrength;
-        return length && uppercase && lowercase && number && special;
-    };
 
     const handleTurnstileVerify = (token) => {
         setTurnstileToken(token);
@@ -65,11 +33,6 @@ const Login = () => {
 
         if (!email || !password) {
             toast.error('Please enter both email and password.');
-            return;
-        }
-
-        if (state === 'Sign Up' && !isPasswordValid()) {
-            toast.error('Please enter a strong password.');
             return;
         }
 
@@ -189,7 +152,6 @@ const Login = () => {
                             <input
                                 onChange={(e) => {
                                     setPassword(e.target.value);
-                                    checkPasswordStrength(e.target.value);
                                 }}
                                 value={password}
                                 className="bg-transparent outline-none font-secondary w-full"
@@ -198,48 +160,6 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        {state === 'Sign Up' && password && (
-                            <div className="mt-2 px-2">
-                                <p className="text-xs font-primary font-semibold text-plant-green-dark">
-                                    Password Strength: 
-                                    <span className={`ml-1 ${
-                                        getPasswordStrengthText() === 'Strong password' ? 'text-healthy' : 
-                                        getPasswordStrengthText() === 'Medium password' ? 'text-warning' : 'text-danger'
-                                    }`}>
-                                        {getPasswordStrengthText()}
-                                    </span>
-                                </p>
-                                <div className="flex justify-between mt-1 gap-1">
-                                    {['length', 'uppercase', 'lowercase', 'number'].map((key, index) => (
-                                        <div
-                                            key={key}
-                                            className={`h-2 rounded-full flex-grow ${
-                                                Object.values(passwordStrength).slice(0, index + 1).every((v) => v)
-                                                    ? 'bg-healthy'
-                                                    : 'bg-earth-medium'
-                                            }`}
-                                        ></div>
-                                    ))}
-                                </div>
-                                <ul className="mt-2 text-xs font-secondary">
-                                    <li className={passwordStrength.length ? 'text-healthy' : 'text-danger'}>
-                                        At least 6 characters
-                                    </li>
-                                    <li className={passwordStrength.uppercase ? 'text-healthy' : 'text-danger'}>
-                                        Contains uppercase letter
-                                    </li>
-                                    <li className={passwordStrength.lowercase ? 'text-healthy' : 'text-danger'}>
-                                        Contains lowercase letter
-                                    </li>
-                                    <li className={passwordStrength.number ? 'text-healthy' : 'text-danger'}>
-                                        Contains a number
-                                    </li>
-                                    <li className={passwordStrength.special ? 'text-healthy' : 'text-danger'}>
-                                        Contains a special character
-                                    </li>
-                                </ul>
-                            </div>
-                        )}
                     </div>
 
                     {state === 'Login' && (

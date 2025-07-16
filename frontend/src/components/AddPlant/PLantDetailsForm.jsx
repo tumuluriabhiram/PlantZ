@@ -6,7 +6,6 @@ const PlantDetailsForm = ({ formData, onChange, plantType, isQuickAdd, onToggleQ
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const { getPlantTypeById, getPlantCareInfo } = usePlantTypes();
-console.log(plantType);
 
   // Get plant type data
   const careInfo = getPlantCareInfo(plantType);
@@ -52,7 +51,7 @@ console.log(plantType);
   ];
 
   const handleFieldChange = (field, value) => {
-    onChange({ [field]: value });
+    onChange(field, value);
   };
 
   const getCareRecommendation = () => {
@@ -123,7 +122,7 @@ console.log(plantType);
         Tell us more about your {plantType?.name || 'plant'} so we can provide personalized care recommendations.
       </p>
 
-      {getCareRecommendation()}
+      {/* {getCareRecommendation()} */}
 
       <div className="space-y-6 mt-6">
         {/* Plant Nickname */}
@@ -138,7 +137,7 @@ console.log(plantType);
             onChange={(e) => onChange('nickname', e.target.value)}
             onBlur={() => handleBlur('nickname')}
             placeholder="E.g., Spike, Leafy, etc."
-            className={`w-full px-4 py-2 border rounded-md focus:ring-green-500 focus:border-green-500 ${errors.nickname ? 'border-red-500' : 'border-gray-300'
+            className={`w-full px-4 py-2 border rounded-md focus:ring-green-200 focus:border-green-200 ${errors.nickname ? 'border-red-500' : 'border-gray-300'
               }`}
             required
             aria-describedby={errors.nickname ? "nickname-error" : ""}
@@ -163,7 +162,8 @@ console.log(plantType);
               <button
                 key={condition.id}
                 onClick={() => handleFieldChange('condition', condition.id)}
-                className={`cursor-pointer border rounded-md p-3 text-center transition-all ${formData.condition === condition.id
+                className={`cursor-pointer border rounded-md p-3 text-center transition-all 
+                  ${formData.condition === condition.id
                     ? 'border-green-600 bg-green-50'
                     : 'border-gray-200 hover:border-green-300'
                   }`}
@@ -213,7 +213,8 @@ console.log(plantType);
               <div
                 key={size.id}
                 onClick={() => handleFieldChange('potSize', size.id)}
-                className={`cursor-pointer border rounded-md p-3 text-center transition-all ${formData.potSize === size.id
+                className={`cursor-pointer border rounded-md p-3 text-center transition-all 
+                  ${formData.potSize === size.id
                     ? 'border-green-600 bg-green-50'
                     : 'border-gray-200 hover:border-green-300'
                   }`}

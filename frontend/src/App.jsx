@@ -21,7 +21,6 @@ import NotificationsPage from './pages/NotificationsPage';
 import ProfilePage from './components/ProfilePage';
 import ProfileSettingsPage from './pages/ProfileSettingsPage';
 import RewardsPage from './pages/RewardsPage';
-import LandingPage from './pages/LandingPage.jsx'; // Import the new landing page
 import DiseaseDetection from './pages/DiseaseDetection.jsx';
 
 // Import new Community components

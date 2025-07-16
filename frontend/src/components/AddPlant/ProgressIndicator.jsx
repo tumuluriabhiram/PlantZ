@@ -5,8 +5,7 @@ const ProgressIndicator = ({ currentStep, totalSteps }) => {
   const steps = [
     { num: 1, label: 'Choose Plant Type' },
     { num: 2, label: 'Plant Details' },
-    { num: 3, label: 'Customize Avatar' },
-    { num: 4, label: 'Complete' }
+    { num: 3, label: 'Complete' }
   ];
 
   return (
