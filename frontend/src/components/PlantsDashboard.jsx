@@ -107,7 +107,7 @@ const PlantsDashboard = () => {
           />
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
         </div>
-
+{/* 
         <div className="flex flex-wrap gap-2 w-full md:w-auto">
           <button
             onClick={() => setFilter('all')}
@@ -151,7 +151,7 @@ const PlantsDashboard = () => {
           >
             Succulents
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ToastContainer } from 'react-toastify';
@@ -39,7 +38,6 @@ import RewardToast from './components/Rewards/RewardToast';
 
 // Test components
 import PlantHealthCheck from './pages/plantHealth.jsx';
-import Emotion from './pages/Emotion.jsx';
 import ChatNavigation from './components/Navigation/ChatNavigation.jsx';
 import CommunityNavigation from './components/Navigation/CommunityNavigation.jsx';
 
@@ -122,7 +120,7 @@ function App() {
 
                         {/* Main app routes with layout - Home is now the dashboard */}
                         <Route element={<Layout />}>
-                            <Route path="/dashboard" element={
+                            <Route path="/" element={
                                 <PageTransition>
                                     <Home />
                                 </PageTransition>

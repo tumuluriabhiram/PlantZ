@@ -9,19 +9,19 @@ const Header = () => {
   const navigate = useNavigate();
   const { userData } = useContext(AppContent);
 
-  // Map routes to their page titles
-  const getPageTitle = (pathname) => {
-    const routes = {
-      '/dashboard': 'Home',
-      '/plants': 'My Plants',
-      '/reminders': 'Reminders',
-      '/schedule': 'Schedule',
-      '/profile': 'Profile',
-      '/health' : 'Health'
-    };
+  // // Map routes to their page titles
+  // const getPageTitle = (pathname) => {
+  //   const routes = {
+  //     '/': 'Home',
+  //     '/plants': 'My Plants',
+  //     '/reminders': 'Reminders',
+  //     '/schedule': 'Schedule',
+  //     '/profile': 'Profile',
+  //     '/health' : 'Health'
+  //   };
 
-    return routes[pathname] || 'Page';
-  };
+  //   return routes[pathname] || 'Page';
+  // };
 
   const handleGetStarted = () => {
     navigate(userData?'/plants':'/login'); 
@@ -30,7 +30,7 @@ const Header = () => {
   return (
     <div className="w-full flex flex-col items-start mt-2 md:mt-4">
 
-      {location.pathname === '/dashboard' && (
+      {location.pathname === '/' && (
         <div className='flex flex-col items-center text-center text-text-primary w-full'>
           <img src={assets.header_img} alt="" className='w-36 h-36 rounded-full mb-6 animate-header-image' />
           <h1 className='flex items-center gap-2 text-xl sm:text-3xl font-medium mb-2 animate-text-fade'>

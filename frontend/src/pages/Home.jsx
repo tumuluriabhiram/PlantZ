@@ -1,5 +1,4 @@
 import Header from '../components/Header.jsx';
-import Emotion from './Emotion.jsx';
 
 const Home = () => {
   return (

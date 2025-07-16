@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaWater, FaSun, FaInfo, FaLeaf, FaExclamationTriangle } from 'react-icons/fa';
+import { FaWater, FaSun, FaLeaf, FaExclamationTriangle } from 'react-icons/fa';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
@@ -164,15 +164,6 @@ const PlantCard = ({ plant, fetchPlantDetails }) => {
         </div>
       </div>
 
-      <div className="flex border-t border-gray-100">
-        <Link 
-          to={`/plants/${detailedPlant._id}`} 
-          className="flex-1 py-2 text-center text-green-600 hover:bg-green-50 transition-colors text-sm font-medium"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <FaInfo className="inline mr-1" size={12} /> Details
-        </Link>
-      </div>
     </motion.div>
   );
 };

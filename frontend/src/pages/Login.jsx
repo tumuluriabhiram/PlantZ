@@ -9,7 +9,7 @@ import Turnstile from 'react-turnstile';
 const Login = () => {
     const navigate = useNavigate();
     const { backendUrl, setIsLoggedIn, getUserData } = useContext(AppContent);
-    const [state, setState] = useState('Sign Up');
+    const [state, setState] = useState('Login');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -36,7 +36,7 @@ const Login = () => {
             return;
         }
 
-        if (!turnstileToken) {
+        else if (!turnstileToken) {
             toast.error('Please complete the security verification.');
             return;
         }
@@ -70,7 +70,7 @@ const Login = () => {
                 if (data.success) {
                     setIsLoggedIn(true);
                     getUserData();
-                    navigate('/dashboard');
+                    navigate('/');
                     toast.success(data.message || 'Login successful!');
                 }
             }
