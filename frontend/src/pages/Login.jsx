@@ -6,6 +6,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Turnstile from 'react-turnstile';
 
+import { FiEyeOff, FiEye } from "react-icons/fi";
+
 const Login = () => {
     const navigate = useNavigate();
     const { backendUrl, setIsLoggedIn, getUserData } = useContext(AppContent);
@@ -14,6 +16,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [turnstileToken, setTurnstileToken] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleTurnstileVerify = (token) => {
         setTurnstileToken(token);
@@ -147,7 +150,7 @@ const Login = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <div className="flex items-center gap-3 w-full px-5 py-3 rounded-full bg-earth-light border border-earth-medium">
+                        <div className="flex items-center gap-3 w-full px-5 py-3 rounded-full bg-earth-light border border-earth-medium relative">
                             <img src={assets.lock_icon} alt="" />
                             <input
                                 onChange={(e) => {
@@ -155,10 +158,19 @@ const Login = () => {
                                 }}
                                 value={password}
                                 className="bg-transparent outline-none font-secondary w-full"
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 placeholder="Password"
                                 required
                             />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                className="absolute right-4 text-xl text-[#b3c0ff] rounded-full transition-all"
+                                tabIndex={-1}
+                                aria-label={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? <FiEye/> : <FiEyeOff/>}
+                            </button>
                         </div>
                     </div>
 
