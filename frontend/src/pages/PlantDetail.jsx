@@ -50,6 +50,7 @@ const PlantDetail = () => {
           }
         });
         setPlant(response.data.data);
+        console.log(response.data.data)
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch plant details');
       } finally {
@@ -124,7 +125,6 @@ const PlantDetail = () => {
   }
 
   async function handleDelete(){
-
     try{
       const response = await axios.delete(`${backendUrl}/api/plants/${plantId}`, {
         headers: {
@@ -139,9 +139,6 @@ const PlantDetail = () => {
     catch (err){
       setError(err.response?.data?.message || 'Failed to delete plant');
     }
-
-
-    console.log(plantId)
   }
 
   return (

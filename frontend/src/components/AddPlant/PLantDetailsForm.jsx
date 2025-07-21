@@ -323,44 +323,8 @@ const PlantDetailsForm = ({ formData, onChange, plantType, isQuickAdd, onToggleQ
         </div>
 
         {/* Quick Add Toggle */}
-        <div className="pt-4 border-t border-gray-200">
-          <div className="flex items-center justify-between">
-            <label className="block text-sm font-medium text-gray-700">
-              Skip avatar customization
-            </label>
-            <div className="relative inline-block w-10 mr-2 align-middle select-none">
-              <input
-                type="checkbox"
-                id="quickAdd"
-                name="quickAdd"
-                className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
-                onChange={(e) => onChange('quickAdd', e.target.checked)}
-                checked={formData.quickAdd || false}
-              />
-              <label
-                htmlFor="quickAdd"
-                className="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
-              ></label>
-            </div>
-          </div>
-          <p className="text-xs text-gray-500 mt-1">
-            Enable this to skip the avatar customization step and use default settings
-          </p>
-        </div>
-      </div>
-
-      <style>{`
-        .toggle-checkbox:checked {
-          right: 0;
-          border-color: #68D391;
-        }
-        .toggle-checkbox:checked + .toggle-label {
-          background-color: #68D391;
-        }
-        .toggle-label {
-          transition: background-color 0.2s ease;
-        }
-      `}</style>
+        <hr className="pt-4 border-t border-gray-200" />
+    </div>
     </div>
   );
 };

@@ -27,7 +27,8 @@ const postImage = async (req, res) => {
     
     // Write the file to disk
     await fs.writeFile(filepath, req.file.buffer);
-    
+
+        
     // Return the file information
     res.status(200).json({
       success: true,

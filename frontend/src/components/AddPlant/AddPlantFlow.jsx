@@ -196,6 +196,19 @@ const AddPlantFlow = () => {
             onChange={(field, value) => updateFormData({ [field]: value })}
             errors={errors}
           />);
+      
+      case 3:
+        return (
+          <div>
+            {
+              Object.keys(formData).map((key, index) => (
+                <div key={key}>
+                  <strong>{key}:</strong> {typeof formData[key] === 'object' && formData[key] !== null ? JSON.stringify(formData[key]) : String(formData[key])}
+                </div>
+              ))
+            }
+          </div>
+        );
 
       default:
         return null;

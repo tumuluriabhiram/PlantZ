@@ -56,21 +56,21 @@ const ProfileSettingsPage = () => {
   const [activeSection, setActiveSection] = useState('profile');
 
   // Handle theme change
-  const handleThemeChange = (theme) => {
-    setUser({
-      ...user,
-      preferences: {
-        ...user.preferences,
-        theme
-      }
-    });
+  // const handleThemeChange = (theme) => {
+  //   setUser({
+  //     ...user,
+  //     preferences: {
+  //       ...user.preferences,
+  //       theme
+  //     }
+  //   });
 
-    // Apply theme to document - in a real app you'd use a theme context
-    document.documentElement.classList.remove('theme-light', 'theme-dark', 'theme-green');
-    document.documentElement.classList.add(`theme-${theme}`);
+  //   // Apply theme to document - in a real app you'd use a theme context
+  //   document.documentElement.classList.remove('theme-light', 'theme-dark', 'theme-green');
+  //   document.documentElement.classList.add(`theme-${theme}`);
 
-    toast.success(`Theme changed to ${theme} mode`);
-  };
+  //   toast.success(`Theme changed to ${theme} mode`);
+  // };
 
   // Handle notification toggle
   const handleNotificationToggle = (key) => {
@@ -151,7 +151,7 @@ const ProfileSettingsPage = () => {
                 <FiChevronRight className="ml-auto" />
               </button>
             </motion.li>
-            <motion.li variants={itemVariants}>
+            {/* <motion.li variants={itemVariants}>
               <button
                 onClick={() => setActiveSection('appearance')}
                 className={`flex items-center w-full p-3 rounded-lg text-left ${activeSection === 'appearance' ? 'bg-green-100 text-green-800' : 'hover:bg-gray-100'}`}
@@ -160,7 +160,7 @@ const ProfileSettingsPage = () => {
                 <span>Appearance</span>
                 <FiChevronRight className="ml-auto" />
               </button>
-            </motion.li>
+            </motion.li> */}
             <motion.li variants={itemVariants}>
               <button
                 onClick={() => setActiveSection('preferences')}
@@ -359,7 +359,7 @@ const ProfileSettingsPage = () => {
           )}
 
           {/* Appearance Section */}
-          {activeSection === 'appearance' && (
+          {/* {activeSection === 'appearance' && (
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -419,7 +419,7 @@ const ProfileSettingsPage = () => {
                 </div>
               </motion.div>
             </motion.div>
-          )}
+          )} */}
 
           {/* Preferences Section */}
           {activeSection === 'preferences' && (
@@ -493,7 +493,7 @@ const ProfileSettingsPage = () => {
                   </div>
                 </div>
 
-                <div className="pt-2">
+                {/* <div className="pt-2">
                   <h3 className="font-medium mb-2">Default Dashboard View</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <button className="p-4 border border-green-500 rounded-lg bg-green-50 flex items-center">
@@ -509,7 +509,7 @@ const ProfileSettingsPage = () => {
                       <span>List View</span>
                     </button>
                   </div>
-                </div>
+                </div> */}
               </motion.div>
             </motion.div>
           )}

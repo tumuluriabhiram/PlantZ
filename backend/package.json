@@ -27,6 +27,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
+    "onnxruntime-node": "^1.22.0-rev",
     "otp-generator": "^4.0.1"
   }
 }
