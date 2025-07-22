@@ -41,8 +41,6 @@ import PlantHealthCheck from './pages/plantHealth.jsx';
 import ChatNavigation from './components/Navigation/ChatNavigation.jsx';
 import CommunityNavigation from './components/Navigation/CommunityNavigation.jsx';
 
-// Page components
-const PlantsPage = () => <PlantsDashboard />;
 
 // Animated page transitions
 const PageTransition = ({ children }) => {
@@ -127,7 +125,7 @@ function App() {
                             } />
                             <Route path="/plants" element={
                                 <PageTransition>
-                                    <PlantsPage />
+                                    <PlantsDashboard />
                                 </PageTransition>
                             } />
                             {/* ... other routes within the Layout ... */}

@@ -32,7 +32,7 @@ const DiseaseDetection = () => {
     fileInputRef.current.click();
   };
 
-  const handleAnalyze = async () => {
+  async function handleAnalyze () {
     try {
       setLoading(true);
       setError(null);
@@ -54,7 +54,9 @@ const DiseaseDetection = () => {
         }
       );
 
+      console.log(response.data);
       setResult(response.data);
+
     } catch (err) {
       console.error('Error during disease detection:', err);
       setError(
@@ -71,43 +73,6 @@ const DiseaseDetection = () => {
     setResult(null);
     setError(null);
   };
-
-  // Mock result for demonstration
-  const mockResult = {
-    disease: "Powdery Mildew",
-    confidence: 95.8,
-    treatment: [
-      "Immediately isolate the affected plant to prevent spreading to other plants.",
-      "Remove and dispose of heavily infected leaves and stems.",
-      "Apply a fungicide specifically formulated for powdery mildew. Neem oil or potassium bicarbonate solutions are effective organic options.",
-      "Improve air circulation around the plant by pruning dense foliage.",
-      "Water at the base of the plant to keep foliage dry.",
-      "Reduce humidity around the plant if possible."
-    ],
-    prevention: "To prevent future infections, ensure good air circulation, avoid overhead watering, and space plants properly. Consider preventative treatments during humid conditions."
-  };
-
-  // For demonstration purposes, use mock result if no actual result
-  const displayResult = result || (preview && !loading ? mockResult : null);
-
-
-  //Post Function
-  const postImage = async () => {
-    try {
-      const formData = new FormData();
-      formData.append('image', image);
-
-      const response = await axios.post(`${backendUrl}/api/disease`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      console.log('Response:', response.data);
-    } catch (error) {
-      console.error('Error uploading image:', error);
-    }
-  }
 
 
   return (
@@ -246,7 +211,7 @@ const DiseaseDetection = () => {
                 Our AI is examining the image to identify any diseases and prepare treatment recommendations.
               </p>
             </div>
-          ) : displayResult ? (
+          ) : result ? (
             <motion.div 
               className="bg-white rounded-xl shadow-lg p-8"
               initial={{ opacity: 0 }}
@@ -258,15 +223,15 @@ const DiseaseDetection = () => {
                   <FaLeaf className="text-green-600 text-xl" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-xl text-gray-800">{displayResult.disease}</h3>
-                  <p className="text-green-600">Confidence: {displayResult.confidence}%</p>
+                  <h3 className="font-bold text-xl text-gray-800">{result.disease}</h3>
+                  <p className="text-green-600">Confidence: {result.confidence}</p>
                 </div>
               </div>
               
               <div className="mb-6">
                 <h4 className="font-semibold text-lg text-gray-800 mb-2">Treatment Steps:</h4>
                 <ol className="space-y-3">
-                  {displayResult.treatment.map((step, index) => (
+                  {result.treatment.map((step, index) => (
                     <motion.li 
                       key={index}
                       className="flex items-start"
@@ -274,10 +239,10 @@ const DiseaseDetection = () => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: 0.1 * index }}
                     >
-                      <div className="bg-green-100 text-green-800 font-semibold rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <div className="bg-green-100 text-green-800 font-semibold rounded-full w-6 h-6 flex items-left justify-center mr-3 flex-shrink-0 mt-0.5">
                         {index + 1}
                       </div>
-                      <p className="text-gray-700">{step}</p>
+                      <p className="text-gray-700 text-left">{step}</p>
                     </motion.li>
                   ))}
                 </ol>
@@ -285,7 +250,7 @@ const DiseaseDetection = () => {
               
               <div>
                 <h4 className="font-semibold text-lg text-gray-800 mb-2">Prevention:</h4>
-                <p className="text-gray-700">{displayResult.prevention}</p>
+                <p className="text-gray-700 text-left">{result.prevention}</p>
               </div>
 
               <motion.button
