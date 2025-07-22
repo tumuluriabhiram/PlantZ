@@ -28,6 +28,7 @@
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
     "onnxruntime-node": "^1.22.0-rev",
-    "otp-generator": "^4.0.1"
+    "otp-generator": "^4.0.1",
+    "sharp": "^0.34.3"
   }
 }

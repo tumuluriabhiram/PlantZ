@@ -1,11 +1,13 @@
-import fs from 'fs/promises';
-import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
+import sharp from 'sharp';
+import ort from 'onnxruntime-node';
+
+import diseaseMap from '../models/index_to_class.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const uploadDir = path.join(__dirname, '../uploads');
 
 // Get all diseases for user
 const getDiseases = async (req, res) => {
@@ -18,27 +20,45 @@ const postImage = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "No image file uploaded" });
     }
-    
-    // Create a unique filename
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
-    const ext = path.extname(req.file.originalname).toLowerCase();
-    const filename = `plant-${uniqueSuffix}${ext}`;
-    const filepath = path.join(uploadDir, filename);
-    
-    // Write the file to disk
-    await fs.writeFile(filepath, req.file.buffer);
 
-        
+    const imgSize = 200
+
+    const imageBuffer = await sharp(req.file.buffer)
+      .resize(imgSize, imgSize)
+      .toFormat("jpg")
+      .raw()
+      .toBuffer();
+
+
+    const floatArray = Float32Array.from(imageBuffer);
+    const inputTensor = new ort.Tensor('float32', floatArray, [1, imgSize, imgSize, 3]);
+    const session = await ort.InferenceSession.create('../backend/plant_disease.onnx');
+    const feeds = { input_1: inputTensor };
+
+    let results = await session.run(feeds);
+    results = results.dense_1.cpuData;
+
+    let output = 0
+
+    for (let i = 0; i < results.length; i++) {
+      if (results[i]>results[output]) {
+        output = i;
+      }
+    }
+
     // Return the file information
     res.status(200).json({
       success: true,
       message: "Image uploaded successfully",
-      fileData: {
-        filename: filename,
-        path: filepath,
-        size: req.file.size,
-        mimetype: req.file.mimetype
-      }
+      disease: diseaseMap[output],
+      confidence: (results[output]*100).toFixed(2) + "%",
+      treatment: [
+      "Immediately isolate the affected plant to prevent spreading to other plants.",
+      "Remove and dispose of heavily infected leaves and stems.",
+      "Apply a fungicide specifically formulated for powdery mildew. Neem oil or potassium bicarbonate solutions are effective organic options.",
+      "Improve air circulation around the plant by pruning dense foliage.",
+      ],
+      prevention: "To prevent future infections, ensure good air circulation, avoid overhead watering, and space plants properly. Consider preventative treatments during humid conditions."
     });
     
   } catch (error) {
