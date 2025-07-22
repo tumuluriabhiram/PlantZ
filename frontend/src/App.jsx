@@ -22,13 +22,6 @@ import ProfileSettingsPage from './pages/ProfileSettingsPage';
 import RewardsPage from './pages/RewardsPage';
 import DiseaseDetection from './pages/DiseaseDetection.jsx';
 
-// Import new Community components
-import CommunityHub from './pages/CommunityHub.jsx';
-import AppleCommunity from './pages/CommunityPages/AppleCommunity.jsx';
-import CornCommunity from './pages/CommunityPages/CornCommunity.jsx';
-import RiceCommunity from './pages/CommunityPages/RiceCommunity.jsx';
-import WheatCommunity from './pages/CommunityPages/WheatCommunity.jsx';
-import TomatoCommunity from './pages/CommunityPages/TomatoCommunity.jsx';
 
 import { PlantChatProvider } from './components/PlantChatContext';
 import { NotificationProvider } from './components/Notifications/NotificationContext';
@@ -60,9 +53,6 @@ const PageTransition = ({ children }) => {
       <div className="fixed bottom-8 right-8 z-50">
         <ChatNavigation />
       </div>
-      <div className="fixed bottom-24 right-8 z-50">
-        <CommunityNavigation />
-      </div>
     </AnimatePresence>
   );
 };
@@ -87,12 +77,6 @@ function App() {
                     <RewardToast />
                     <Routes>
                         {/* Public landing page */}
-                        
-                        {/* <Route path="/" element={
-                            <PageTransition>
-                                <LandingPage />
-                            </PageTransition>
-                        } /> */}
 
                         {/* Auth routes - no layout */}
                         <Route path="/login" element={
@@ -100,11 +84,7 @@ function App() {
                                 <Login />
                             </PageTransition>
                         } />
-                        {/* <Route path="/emotion" element={
-                            <PageTransition>
-                                <Emotion />
-                            </PageTransition>
-                        } /> */}
+
                         <Route path="/email-verify" element={
                             <PageTransition>
                                 <EmailVerify />
@@ -198,45 +178,6 @@ function App() {
                                     <DiseaseDetection />
                                 </PageTransition>
                             } />
-
-                            {/* New Community routes */}
-                            <Route path="/community" element={
-                                <PageTransition>
-                                    <CommunityHub />
-                                </PageTransition>
-                            } />
-                            {/* Route to the individual hardcoded community pages */}
-                            <Route path="/community/apple" element={
-                                <PageTransition>
-                                    <AppleCommunity />
-                                </PageTransition>
-                            } />
-                            <Route path="/community/corn" element={
-                                <PageTransition>
-                                    <CornCommunity />
-                                </PageTransition>
-                            } />
-                            <Route path="/community/rice" element={
-                                <PageTransition>
-                                    <RiceCommunity />
-                                </PageTransition>
-                            } />
-                            <Route path="/community/wheat" element={
-                                <PageTransition>
-                                    <WheatCommunity />
-                                </PageTransition>
-                            } />
-                            <Route path="/community/tomato" element={
-                                <PageTransition>
-                                    <TomatoCommunity />
-                                </PageTransition>
-                            } />
-                            {/* You can still have a dynamic route if you want a fallback or more flexibility later */}
-                            {/* <Route path="/community/:plantType" element={
-                                <PageTransition>
-                                    <CommunityPage />
-                                </PageTransition>
-                            } /> */}
                         </Route>
                     </Routes>
                 </NotificationProvider>
