@@ -5,73 +5,22 @@ import { removeFromCloudinary } from "../helpers/cloudinaryUtils.js";
 // Add a new plant with image upload
 const addPlant = async (req, res) => {
   try {
-    const { 
-      plantType,
-      nickname,
-      condition = 'healthy',
-      location = 'indoor',
-      potSize = 'medium',
-      acquisitionDate,
-      avatarVariant = 1,
-      avatarExpression = 'happy',
-      avatarColor = 'default',
-      isQuickAdd = false
-    } = req.body;
+      console.log(req.body);
 
-    // Validate required fields
-    if (!plantType || !nickname) {
-      return res.status(400).json({
-        success: false,
-        message: 'Plant type and nickname are required'
-      });
-    }
-
-    let avatarData = {
-      variant: isQuickAdd ? 1 : avatarVariant,
-      expression: isQuickAdd ? 'happy' : avatarExpression,
-      color: isQuickAdd ? 'default' : avatarColor,
-      url: null,
-      public_id: null
-    };
-
-    // Handle image upload if file exists
-    if (req.file) {
-      try {
-        const uploadResult = await uploadToCloudinary(req.file, 'plants');
-        console.log(uploadResult);
-        
-        avatarData.url = uploadResult.url;
-        avatarData.public_id = uploadResult.public_id;
-      } catch (uploadError) {
-        console.error('Upload error:', uploadError);
-        return res.status(500).json({
-          success: false,
-          message: 'Failed to upload plant image',
-          error: uploadError.message
-        });
-      }
-    }
-
-    // Create new plant
-    const newPlant = new Plant({
+    const x= await Plant.insertOne({
       user: req.userId,
-      plantType,
-      nickname,
-      condition,
-      location,
-      potSize,
-      acquisitionDate: acquisitionDate || new Date(),
-      avatar: avatarData
+      plantType: req.body.plantType,  
+      nickname: req.body.nickname,
+      condition: req.body.condition,
+      location: req.body.location,
+      potSize: req.body.potSize,
+      wateringNeeds: req.body.wateringNeeds,
+      acquisitionDate: req.body.acquisitionDate,
+      lastWatered: new Date(),
+      lastFertilized: new Date()
     });
 
-    const savedPlant = await newPlant.save();
-    
-    res.status(201).json({
-      success: true,
-      data: savedPlant
-    });
-    console.log(savedPlant);
-    
+    return res.status(200).send(x);
 
   } catch (err) {
     console.error('Add plant error:', err);

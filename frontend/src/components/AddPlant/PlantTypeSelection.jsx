@@ -1,16 +1,13 @@
 // src/components/AddPlant/PlantTypeSelection.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
+import plantData from './plantData.js'
+
 import PropTypes from 'prop-types';
 
-const PlantTypeSelection = ({ plantTypes = [], selectedType, onSelect, error }) => {
+const PlantTypeSelection = ({ selectedType, onSelect, error }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  
-  // Ensure plantTypes is always treated as an array
-  const safePlantTypes = Array.isArray(plantTypes) ? plantTypes : [];
-  const filteredPlants = safePlantTypes.filter(plant => 
-    plant?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    plant?.scientificName?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Always use plantData for display
+  const filteredPlants = plantData; // Always use plantData for display and care guide
 
   return (
     <div>
@@ -31,7 +28,7 @@ const PlantTypeSelection = ({ plantTypes = [], selectedType, onSelect, error }) 
 
       {filteredPlants.length === 0 ? (
         <div className="text-center py-8 text-gray-500">
-          {safePlantTypes.length === 0 ? 'Loading plant types...' : 'No matching plants found'}
+          {filteredPlants.length === 0 ? 'Loading plant types...' : 'No matching plants found'}
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -63,7 +60,7 @@ const PlantTypeSelection = ({ plantTypes = [], selectedType, onSelect, error }) 
       {selectedType && (
         <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
           <h3 className="font-medium text-lg text-green-800">
-            {safePlantTypes.find(p => p.id === selectedType)?.name || 'Selected Plant'} Care Guide
+            {plantData.find(p => p.id === selectedType)?.name || 'Selected Plant'} Care Guide
           </h3>
           <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex items-center">
@@ -71,7 +68,7 @@ const PlantTypeSelection = ({ plantTypes = [], selectedType, onSelect, error }) 
               <div>
                 <div className="text-sm font-medium">Water Needs</div>
                 <div className="text-xs text-gray-600">
-                  {safePlantTypes.find(p => p.id === selectedType)?.waterFrequency || 'Moderate'}
+                  {plantData.find(p => p.id === selectedType)?.waterFrequency || 'Moderate'}
                 </div>
               </div>
             </div>
@@ -80,7 +77,7 @@ const PlantTypeSelection = ({ plantTypes = [], selectedType, onSelect, error }) 
               <div>
                 <div className="text-sm font-medium">Light Needs</div>
                 <div className="text-xs text-gray-600">
-                  {safePlantTypes.find(p => p.id === selectedType)?.lightNeeds || 'Full sun'}
+                  {plantData.find(p => p.id === selectedType)?.lightNeeds || 'Full sun'}
                 </div>
               </div>
             </div>
@@ -89,7 +86,7 @@ const PlantTypeSelection = ({ plantTypes = [], selectedType, onSelect, error }) 
               <div>
                 <div className="text-sm font-medium">Care Level</div>
                 <div className="text-xs text-gray-600">
-                  {safePlantTypes.find(p => p.id === selectedType)?.careLevel || 'Medium'}
+                  {plantData.find(p => p.id === selectedType)?.careLevel || 'Medium'}
                 </div>
               </div>
             </div>

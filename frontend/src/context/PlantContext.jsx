@@ -79,17 +79,11 @@ export const PlantProvider = ({ children }) => {
       formData.append('location', plantData.location);
       formData.append('potSize', plantData.potSize);
       formData.append('acquisitionDate', plantData.acquisitionDate);
-      formData.append('isQuickAdd', plantData.isQuickAdd);
-      
-      if (!plantData.isQuickAdd) {
-        formData.append('avatarVariant', plantData.avatarVariant);
-        formData.append('avatarExpression', plantData.avatarExpression);
-        formData.append('avatarColor', plantData.avatarColor);
-        
-        if (plantData.avatarFile) {
-          formData.append('avatar', plantData.avatarFile);
-        }
-      }
+      formData.append('wateringNeeds', plantData.WateringRate)
+
+      // Convert FormData to an object and print it
+      const formDataObject = Object.fromEntries(formData.entries());
+      console.log('Form Data:', formDataObject);
 
       const { data } = await axios.post(`${backendUrl}/api/plants/upload`, formData, {
         headers: {
@@ -112,10 +106,6 @@ export const PlantProvider = ({ children }) => {
       setIsLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   fetchPlantTypes();
-  // }, []);
 
   const value = {
     plantTypes,

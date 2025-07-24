@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { usePlantTypes } from '../../context/PlantContext';
-import { FaTint, FaSun, FaLeaf } from 'react-icons/fa';
 
 const PlantDetailsForm = ({ formData, onChange, plantType, isQuickAdd, onToggleQuickAdd }) => {
   const [errors, setErrors] = useState({});
@@ -24,46 +23,15 @@ const PlantDetailsForm = ({ formData, onChange, plantType, isQuickAdd, onToggleQ
   ];
 
   const potSizes = [
-    { id: 'small', label: 'Small (< 6")' },
-    { id: 'medium', label: 'Medium (6-12")' },
-    { id: 'large', label: 'Large (> 12")' }
-  ];
-  const wateringOptions = [
-    { id: 'daily', label: 'Daily' },
-    { id: 'weekly', label: 'Weekly' },
-    { id: 'biweekly', label: 'Bi-weekly' },
-    { id: 'monthly', label: 'Monthly' },
-    { id: 'asNeeded', label: 'As needed' }
-  ];
-
-  const sunlightOptions = [
-    { id: 'full', label: 'Full sun' },
-    { id: 'partial', label: 'Partial sun' },
-    { id: 'shade', label: 'Shade' },
-    { id: 'indirect', label: 'Indirect light' }
-  ];
-
-  const fertilizationOptions = [
-    { id: 'weekly', label: 'Weekly' },
-    { id: 'monthly', label: 'Monthly' },
-    { id: 'quarterly', label: 'Quarterly' },
-    { id: 'seasonal', label: 'Seasonal' }
+    { id: 'xsmall', label: 'Extra Small (< 6")' },
+    { id: 'small', label: 'Small (6-8")' },
+    { id: 'medium', label: 'Medium (8-10")' },
+    { id: 'large', label: 'Medium Large (10-12")' },
+    { id: 'xlarge', label: 'Large (> 12")' }
   ];
 
   const handleFieldChange = (field, value) => {
     onChange(field, value);
-  };
-
-  const getCareRecommendation = () => {
-    if (!careInfo) return null;
-    return (
-      <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm">
-        <div className="font-medium mb-1">Care Recommendations for {plantType?.name}</div>
-        <p><span className="font-semibold">Water:</span> {careInfo.waterFrequency}</p>
-        <p><span className="font-semibold">Light:</span> {careInfo.lightNeeds}</p>
-        <p><span className="font-semibold">Care Level:</span> {careInfo.fertilizerNeeds}</p>
-      </div>
-    );
   };
 
   // Validate form fields
@@ -208,12 +176,12 @@ const PlantDetailsForm = ({ formData, onChange, plantType, isQuickAdd, onToggleQ
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Pot Size
           </label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {potSizes.map((size) => (
               <div
                 key={size.id}
                 onClick={() => handleFieldChange('potSize', size.id)}
-                className={`cursor-pointer border rounded-md p-3 text-center transition-all 
+                className={`cursor-pointer border rounded-md p-3 text-center transition-all text-sm
                   ${formData.potSize === size.id
                     ? 'border-green-600 bg-green-50'
                     : 'border-gray-200 hover:border-green-300'
@@ -228,101 +196,6 @@ const PlantDetailsForm = ({ formData, onChange, plantType, isQuickAdd, onToggleQ
           </div>
         </div>
 
-        <div className="care-preferences-section">
-          <div className="preference-cards">
-            {/* Watering Frequency */}
-            <div className={`preference-card ${errors.wateringFrequency ? 'error' : ''}`}>
-              <div className="preference-header">
-                <div className="water-icon">
-                  <FaTint />
-                </div>
-                <label>Watering Frequency*</label>
-              </div>
-              <select
-                value={formData.wateringFrequency}
-                onChange={(e) => handleFieldChange('wateringFrequency', e.target.value)}
-                className="preference-select"
-              >
-                {wateringOptions.map(opt => (
-                  <option key={opt.id} value={opt.id}>{opt.label}</option>
-                ))}
-              </select>
-              {errors.wateringFrequency && (
-                <span className="error-message">
-                  <FaExclamationCircle /> {errors.wateringFrequency}
-                </span>
-              )}
-            </div>
-
-            {/* Sunlight Exposure */}
-            <div className={`preference-card ${errors.sunlightExposure ? 'error' : ''}`}>
-              <div className="prefeature-arrow">
-                <div className="sun-icon">
-                  <FaSun />
-                </div>
-                <label>Sunlight Exposure*</label>
-              </div>
-              <select
-                value={formData.sunlightExposure}
-                onChange={(e) => handleFieldChange('sunlightExposure', e.target.value)}
-                className="preference-select"
-              >
-                {sunlightOptions.map(opt => (
-                  <option key={opt.id} value={opt.id}>{opt.label}</option>
-                ))}
-              </select>
-              {errors.sunlightExposure && (
-                <span className="error-message">
-                  <FaExclamationCircle /> {errors.sunlightExposure}
-                </span>
-              )}
-            </div>
-
-            {/* Fertilization Schedule */}
-            <div className="preference-card">
-              <div className="preference-header">
-                <div className="leaf-icon">
-                  <FaLeaf />
-                </div>
-                <label>Fertilization Schedule</label>
-              </div>
-              <select
-                value={formData.fertilizationSchedule}
-                onChange={(e) => handleFieldChange('fertilizationSchedule', e.target.value)}
-                className="preference-select"
-              >
-                {fertilizationOptions.map(opt => (
-                  <option key={opt.id} value={opt.id}>{opt.label}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Acquisition Date */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            When did you get this plant?
-          </label>
-          <input
-            type="date"
-            name="acquisitionDate"
-            value={formData.acquisitionDate || ''}
-            onChange={(e) => onChange('acquisitionDate', e.target.value)}
-            onBlur={() => handleBlur('acquisitionDate')}
-            className={`w-full px-4 py-2 border rounded-md focus:ring-green-500 focus:border-green-500 ${errors.acquisitionDate ? 'border-red-500' : 'border-gray-300'
-              }`}
-            max={new Date().toISOString().split('T')[0]}
-            aria-describedby={errors.acquisitionDate ? "date-error" : ""}
-          />
-          {errors.acquisitionDate && (
-            <p id="date-error" className="mt-1 text-sm text-red-600">
-              {errors.acquisitionDate}
-            </p>
-          )}
-        </div>
-
-        {/* Quick Add Toggle */}
         <hr className="pt-4 border-t border-gray-200" />
     </div>
     </div>

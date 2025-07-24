@@ -10,9 +10,6 @@ const PlantSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  scientificName: {
-    type: String,
-  },
   nickname: {
     type: String,
     required: true,
@@ -22,11 +19,6 @@ const PlantSchema = new mongoose.Schema({
   age: {
     type: Number, // in months
     default: 0
-  },
-  careLevel: {
-    type: String,
-    enum: ['easy', 'medium', 'difficult'],
-    default: 'medium'
   },
   condition: {
     type: String,
@@ -38,14 +30,9 @@ const PlantSchema = new mongoose.Schema({
     enum: ['indoor', 'outdoor', 'balcony', 'patio'],
     default: 'indoor'
   },
-  category: {
-    type: String,
-    enum: ['flowers', 'succulents', 'herbs', 'vegetables', 'trees', 'ferns', 'cacti'],
-    // required: true
-  },
   potSize: {
     type: String,
-    enum: ['small', 'medium', 'large'],
+    enum: ['xsmall','small', 'medium', 'large', 'xlarge'],
     default: 'medium'
   },
   acquisitionDate: {
@@ -62,37 +49,18 @@ const PlantSchema = new mongoose.Schema({
     type: Date
   },
   careMetrics: {
-    water: { type: Number, min: 0, max: 100, default: 0 },
-    sunlight: { type: Number, min: 0, max: 100, default: 0 },
-    fertilizer: { type: Number, min: 0, max: 100, default: 0 },
-    temperature: { type: Number, min: 0, max: 100, default: 0 }
+    water: { type: Number, min: 0, max: 100, default: 50 },
+    sunlight: { type: Number, min: 0, max: 100, default: 50 },
+    fertilizer: { type: Number, min: 0, max: 100, default: 0 }
   },
   wateringNeeds: {
-    type: String,
-    enum: ['low', 'medium', 'high'],
-    default: 'medium'
+    type: Number, // in liters per day
+    default: 1
   },
   sunlightNeeds: {
     type: String,
     enum: ['low', 'medium', 'high'],
     default: 'medium'
-  },
-  avatar: {
-    variant: {
-      type: Number,
-      default: 1
-    },
-    expression: {
-      type: String,
-      default: 'happy'
-    },
-    color: {
-      type: String,
-      default: 'default'
-    },
-    url: {
-      type: String
-    }
   },
   createdAt: {
     type: Date,

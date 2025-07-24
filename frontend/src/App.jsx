@@ -12,7 +12,6 @@ import PlantsDashboard from './components/PlantsDashboard';
 import PlantDetail from './pages/PlantDetail';
 import './styles/designSystem.css';
 import './App.css';
-import PlantConversation from './components/PlantConversation';
 import EnhancedPlantGallery from './components/PlantGallery';
 import AddPlantFlow from './components/AddPlant/AddPlantFlow';
 import ChatPage from './pages/ChatPage';
@@ -32,7 +31,6 @@ import RewardToast from './components/Rewards/RewardToast';
 // Test components
 import PlantHealthCheck from './pages/plantHealth.jsx';
 import ChatNavigation from './components/Navigation/ChatNavigation.jsx';
-import CommunityNavigation from './components/Navigation/CommunityNavigation.jsx';
 
 
 // Animated page transitions
@@ -139,24 +137,7 @@ function App() {
                                     <RewardsPage />
                                 </PageTransition>
                             } />
-                            <Route path="/demo" element={
-                                <PageTransition>
-                                    <div className="max-w-md mx-auto">
-                                        <h1 className="text-2xl font-bold text-green-800 mb-6 text-center">Talk to Your Plant</h1>
-                                        <PlantChatProvider>
-                                            <PlantConversation />
-                                        </PlantChatProvider>
-                                    </div>
-                                </PageTransition>
-                            } />
                             <Route path="/chat" element={
-                                <PageTransition>
-                                    <PlantChatProvider>
-                                        <ChatPage />
-                                    </PlantChatProvider>
-                                </PageTransition>
-                            } />
-                            <Route path="/plants/:plantId/chat" element={
                                 <PageTransition>
                                     <PlantChatProvider>
                                         <ChatPage />
