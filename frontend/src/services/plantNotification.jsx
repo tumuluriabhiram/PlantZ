@@ -1,7 +1,16 @@
+import { toast } from 'react-toastify';
+
 export function Notifier(plants){
-  plants.map((data, index)=>{
-    if (data.careMetrics.water<40){
-      console.log(data.nickname)
+  plants.map((data)=>{
+    if (data.careMetrics.water < 40){
+      toast.info(`${data.nickname} is in need of watering!`, {
+        position: 'top-right',
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+        progress: undefined,
+      });
     }
   })
 }
