@@ -8,7 +8,7 @@ import Home from './pages/Home.jsx'; // This remains your dashboard
 import Login from './pages/Login.jsx';
 import EmailVerify from './pages/EmailVerify.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
-import PlantsDashboard from './components/PlantsDashboard';
+import PlantsDashboard from './pages/PlantsDashboard';
 import PlantDetail from './pages/PlantDetail';
 import './styles/designSystem.css';
 import './App.css';
