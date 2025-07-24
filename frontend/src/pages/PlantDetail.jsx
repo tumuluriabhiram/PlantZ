@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -9,10 +9,20 @@ import {
   FaTint,
   FaCloudSun,
   FaSeedling,
-  FaTrash
+  FaTrash,
+  FaSortAmountDown
 } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+
+
+const potData = {
+  "xsmall": 1,
+  "small": 4,
+  "medium": 9,
+  "large": 15,
+  "xlarge": 25
+}
 
 const PlantDetail = () => {
   // Router hooks
@@ -27,6 +37,8 @@ const PlantDetail = () => {
   const [actionLoading, setActionLoading] = useState(false);
   const [refreshCounter, setRefreshCounter] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [showWaterModal, setShowWaterModal] = useState(false);
+  const [waterAmount, setWaterAmount] = useState();
 
   // Configuration
   const authToken = localStorage.getItem('token');
@@ -50,7 +62,7 @@ const PlantDetail = () => {
           }
         });
         setPlant(response.data.data);
-        console.log(response.data.data)
+
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch plant details');
       } finally {
@@ -69,34 +81,40 @@ const PlantDetail = () => {
   };
 
   // Handle plant care actions
-  const handleCareAction = async (action) => {
-    try {
-      setActionLoading(true);
-      setError(null);
-      setActionMessage('');
 
-      const response = await axios.put(
-        `${backendUrl}/api/plants/${plantId}/${action}`,
-        {},
-        {
-          headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
-        }
-      );
-
-      setPlant(response.data.data);
-      setActionMessage(careActionMessages[action] || "Action completed successfully");
-      
-      setTimeout(() => {
-        handleRefresh();
-      }, 500);
-    } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update plant');
-    } finally {
-      setActionLoading(false);
+  const handleCareAction = async (action, amount = null) => {
+    if (action === 'water' && !amount) {
+      setShowWaterModal(true);
+      return;
     }
+
+    if (action === 'water') {
+      addingWater(amount);
+      setActionMessage(careActionMessages[action]);
+      setShowWaterModal(false);
+      setWaterAmount('');
+      return;
+    }
+
+    setActionMessage(careActionMessages[action] || "Action completed successfully");
   };
+
+
+  function addingWater(amount) {
+    const potQuantity = potData[plant.potSize];
+    let waterLevel = (plant.careMetrics.water * potQuantity) / 100;
+    const amountNum = parseFloat(amount);
+    waterLevel += amountNum;
+    const percentage = Math.round((waterLevel / potQuantity) * 100);
+    setPlant(prevPlant => ({
+      ...prevPlant,
+      careMetrics: {
+        ...prevPlant.careMetrics,
+        water: percentage
+      },
+      lastWatered: new Date().toISOString()
+    }));
+  }
 
   // Loading state
   if (loading && !isRefreshing) {
@@ -141,8 +159,61 @@ const PlantDetail = () => {
     }
   }
 
+  // Water Modal Component
+  const WaterModal = () => {
+    if (!showWaterModal) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div 
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.2 }}
+          className="bg-white rounded-2xl p-6 w-96 shadow-xl"
+          key="water-modal"
+        >
+          <div className="modal-content">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">How much water did you add?</h3>
+            <div className="mb-4">
+              <input
+                type="number"
+                value={waterAmount || ''}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setWaterAmount(value);
+                }}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder="Enter amount in litre"
+              />
+            </div>
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowWaterModal(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowWaterModal(false);
+                  handleCareAction('water', waterAmount);
+                }}
+                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 relative">
+      <WaterModal />
       {/* Header with back button */}
       <div className="container mx-auto px-4 py-6">
         <div className='flex justify-between'>
@@ -249,7 +320,7 @@ const PlantDetail = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-4 mb-4">
                 <CareButton
                   icon={<FaTint />}
                   label="Water"
@@ -272,11 +343,12 @@ const PlantDetail = () => {
                   color="emerald"
                 />
               </div>
+              
             </motion.div>
           </div>
 
           {/* Metrics and History */}
-          <div className="xl:col-span-7 space-y-8">
+          <div className="xl:col-span-7 space-y-6">
             {/* Care Metrics */}
             <motion.div
               className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/20"
@@ -327,17 +399,64 @@ const PlantDetail = () => {
                 <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-green-400 to-green-200"></div>
                 
                 <div className="space-y-6">
+                  {plant.lastWatered && (
+                    <CareHistoryItem 
+                      action="watered" 
+                      date={plant.lastWatered}
+                      amount={`${plant.careMetrics?.water || 0}%`}
+                      icon={<FaWater className="text-white" />}
+                      color="blue"
+                    />
+                  )}
+                  {plant.lastFertilized && (
+                    <CareHistoryItem 
+                      action="fertilized" 
+                      date={plant.lastFertilized}
+                      amount={`${plant.careMetrics?.fertilizer || 0}%`}
+                      icon={<FaSeedling className="text-white" />}
+                      color="green"
+                    />
+                  )}
                   {plant.careHistory?.length > 0 ? (
                     plant.careHistory.map((event, index) => (
                       <HistoryItem key={index} event={event} />
                     ))
-                  ) : (
+                  ) : !plant.lastWatered && !plant.lastFertilized && (
                     <div className="text-center py-12 text-gray-500">
                       <FaLeaf className="text-4xl mx-auto mb-4 text-gray-300" />
                       <p>No care history yet. Start caring for your plant!</p>
                     </div>
                   )}
                 </div>
+              </div>
+            </motion.div>
+
+            {/* Health Check Buttons */}
+            <motion.div
+              className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/20 mt-8"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <h2 className="text-2xl font-bold text-green-800 mb-6 flex items-center gap-3">
+                <FaLeaf className="text-green-600" />
+                Plant Health Tools
+              </h2>
+              <div className="grid grid-cols-2 gap-6">
+                <CareButton
+                  icon={<FaLeaf />}
+                  label="Check Health"
+                  onClick={() => navigate('/health')}
+                  loading={false}
+                  color="emerald"
+                />
+                <CareButton
+                  icon={<FaSeedling />}
+                  label="Disease Detection"
+                  onClick={() => navigate('/disease')}
+                  loading={false}
+                  color="blue"
+                />
               </div>
             </motion.div>
           </div>
@@ -407,6 +526,49 @@ const MetricBar = ({ icon, label, value, color }) => {
         />
       </div>
     </div>
+  );
+};
+
+// Component: Care History Item
+const CareHistoryItem = ({ action, date, amount, icon, color }) => {
+  const colorClasses = {
+    blue: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white',
+    green: 'bg-gradient-to-r from-green-500 to-green-600 text-white',
+    amber: 'bg-gradient-to-r from-amber-500 to-amber-600 text-white'
+  };
+
+  const dotColorClasses = {
+    blue: 'bg-blue-500 ring-4 ring-blue-200',
+    green: 'bg-green-500 ring-4 ring-green-200',
+    amber: 'bg-amber-500 ring-4 ring-amber-200'
+  };
+
+  return (
+    <motion.div
+      className="relative flex items-start gap-4 ml-2"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className={`absolute left-4 mt-4 w-5 h-5 ${dotColorClasses[color]} rounded-full shadow-lg border-2 border-white`}></div>
+      <div className={`ml-10 ${colorClasses[color]} rounded-2xl p-5 shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] border-2 border-white/20`}>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl drop-shadow-sm">{icon}</span>
+            <span className="font-bold text-lg capitalize">Last {action}</span>
+          </div>
+        </div>
+        <div className="text-sm text-white/90 font-medium">
+          {new Date(date).toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })}
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

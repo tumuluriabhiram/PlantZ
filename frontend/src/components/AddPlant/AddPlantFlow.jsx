@@ -8,6 +8,7 @@ import { usePlants } from '../../context/PlantContext';
 import { AppContent } from '../../context/AppContext';
 import './AddPlantFlow1.css';
 import axios from 'axios'
+import DisplayPlantData from './DisplayPlantData';
 
 const AddPlantFlow = () => {
   const navigate = useNavigate();
@@ -28,10 +29,10 @@ const AddPlantFlow = () => {
     location: 'indoor',
     potSize: 'medium',
     acquisitionDate: new Date().toISOString().split('T')[0],
-    wateringFrequency: 'weekly',
-    sunlightExposure: 'partial',
-    fertilizationSchedule: 'monthly',
-    notes: ''
+    wateringFrequency: "Medium",
+    sunlightExposure: 'Medium Sun',
+    WateringRate:1,
+
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -115,26 +116,6 @@ const AddPlantFlow = () => {
     setSubmitError(null);
 
     try {
-      const token = localStorage.getItem('token');
-
-      axios.get('/api/plants/upload', {
-        withCredentials: true,
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .catch(error => console.error('Full error:', error));
-
-      if (!token) {
-        throw new Error('Please login to add plants');
-      }
-
-      if (!formData.plantType) {
-        throw new Error('Please select a plant type');
-      }
-      if (!formData.nickname.trim()) {
-        throw new Error('Please enter a nickname for your plant');
-      }
 
       const plantData = {
         ...formData,
@@ -200,13 +181,9 @@ const AddPlantFlow = () => {
       case 3:
         return (
           <div>
-            {
-              Object.keys(formData).map((key, index) => (
-                <div key={key}>
-                  <strong>{key}:</strong> {typeof formData[key] === 'object' && formData[key] !== null ? JSON.stringify(formData[key]) : String(formData[key])}
-                </div>
-              ))
-            }
+            <DisplayPlantData
+              formData={formData}
+            />
           </div>
         );
 
