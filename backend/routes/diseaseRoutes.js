@@ -5,7 +5,7 @@ import upload from '../config/multer.js';
 
 const diseaseRouter = express.Router();
 
-//get Routes
+
 diseaseRouter
   .get('/', diseaseController.getDiseases)
   .post('/', upload.single('image'), diseaseController.postImage);

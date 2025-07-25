@@ -4,16 +4,68 @@ import { dirname } from 'path';
 import sharp from 'sharp';
 import ort from 'onnxruntime-node';
 
+import Disease from '../models/Disease.js';
+
 import diseaseMap from '../models/index_to_class.js';
+import { get } from 'http';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
-// Get all diseases for user
+
+async function getDisease(index){
+  const diseaseName = diseaseMap[index];
+
+  if (diseaseName.toLowerCase().includes("healthy")) {
+    return {
+      name: diseaseName,
+      type: "N/A",
+      iscurable: false,
+      prevention: ["Regular care and maintenance"],
+      treatment: ["No action required"]
+    };
+  } 
+  else {
+    try {
+      const disease = await Disease.findOne({ name: diseaseName }, { _id: 0 });
+      if (!disease) {
+        throw new Error(`Disease with name '${diseaseName}' not found`);
+      }
+      return disease;
+    } catch (err) {
+      console.error("Error fetching disease data:", err);
+      throw new Error("Failed to fetch disease data");
+    }
+  }
+}
+
+
+//@Public
+//@Path: /api/disease/
+//@Method: GET
 const getDiseases = async (req, res) => {
-  res.json({"test": "good"});
+  try{
+    const diseases = await Disease.find();
+    res.json({
+      success: true,
+      count: diseases.length,
+    });
+  }
+  catch (err) {
+    console.error('Get diseases error:', err);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch diseases'
+    });
+  }
 };
 
+
+/// MOST IMP FUNCTION ///
+
+
+//@Public
+//@Path: /api/disease/
+//@Method: POST
 const postImage = async (req, res) => {
   try {
     // Check if file was uploaded
@@ -46,19 +98,14 @@ const postImage = async (req, res) => {
       }
     }
 
+    const diseaseData = await getDisease(output);
+
     // Return the file information
     res.status(200).json({
       success: true,
-      message: "Image uploaded successfully",
-      disease: diseaseMap[output],
-      confidence: (results[output]*100).toFixed(2) + "%",
-      treatment: [
-      "Immediately isolate the affected plant to prevent spreading to other plants.",
-      "Remove and dispose of heavily infected leaves and stems.",
-      "Apply a fungicide specifically formulated for powdery mildew. Neem oil or potassium bicarbonate solutions are effective organic options.",
-      "Improve air circulation around the plant by pruning dense foliage.",
-      ],
-      prevention: "To prevent future infections, ensure good air circulation, avoid overhead watering, and space plants properly. Consider preventative treatments during humid conditions."
+      disease: diseaseData,
+      confidence: (results[output]*100).toFixed(2) + "%"
+      
     });
     
   } catch (error) {
