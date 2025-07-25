@@ -32,11 +32,10 @@ const uploadPlantRouter = express.Router();
 uploadPlantRouter.use(userAuth); // Apply auth to all upload routes
 
 uploadPlantRouter.post('/', upload.single('avatar'), plantController.addPlant);
-uploadPlantRouter.put('/:id', upload.single('avatar'), plantController.updatePlant);
+uploadPlantRouter.put('/:id', plantController.updatePlant);
 basePlantRouter.put('/:id/water', plantController.waterPlant);
 basePlantRouter.put('/:id/sunlight', plantController.adjustSunlight);
 basePlantRouter.put('/:id/fertilize', plantController.fertilizePlant);
-basePlantRouter.put('/:id/temperature', plantController.adjustTemperature);
 
 // Mount routers at different paths
 plantRouter.use('/plants', basePlantRouter);          // /api/plants

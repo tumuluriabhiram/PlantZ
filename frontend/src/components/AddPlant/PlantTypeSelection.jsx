@@ -1,6 +1,6 @@
 // src/components/AddPlant/PlantTypeSelection.jsx
 import { useState } from 'react';
-import plantData from './plantData.js'
+import plantData from '../../data/plantData';
 
 import PropTypes from 'prop-types';
 

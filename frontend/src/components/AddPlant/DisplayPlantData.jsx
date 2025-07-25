@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { FaLeaf, FaMapMarkerAlt, FaRuler, FaCalendarAlt} from 'react-icons/fa';
-import plantData from './plantData.js'
+import plantData from '../../data/plantData';
 
 const DisplayPlantData = ({ formData }) => {
   // Function to format the key into a readable label

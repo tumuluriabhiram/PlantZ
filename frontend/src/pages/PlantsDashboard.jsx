@@ -8,9 +8,7 @@ import {AppContent} from '../context/AppContext'
 
 const PlantsDashboard = () => {
 
-  const {plants, setPlants}  = useContext(AppContent)
-
-  
+  const {plants, setPlants}  = useContext(AppContent);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('all');
@@ -51,56 +49,14 @@ const PlantsDashboard = () => {
           />
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
         </div>
-{/* 
-        <div className="flex flex-wrap gap-2 w-full md:w-auto">
-          <button
-            onClick={() => setFilter('all')}
-            className={`px-3 py-2 rounded-lg text-sm ${filter === 'all' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setFilter('needsAttention')}
-            className={`px-3 py-2 rounded-lg text-sm ${filter === 'needsAttention' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-          >
-            Needs Attention
-          </button>
-          <button
-            onClick={() => setFilter('healthy')}
-            className={`px-3 py-2 rounded-lg text-sm ${filter === 'healthy' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-          >
-            Healthy
-          </button>
-          <button
-            onClick={() => setFilter('thriving')}
-            className={`px-3 py-2 rounded-lg text-sm ${filter === 'thriving' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-          >
-            Thriving
-          </button>
-          <button
-            onClick={() => setFilter('indoor')}
-            className={`px-3 py-2 rounded-lg text-sm ${filter === 'indoor' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-          >
-            Indoor
-          </button>
-          <button
-            onClick={() => setFilter('flowers')}
-            className={`px-3 py-2 rounded-lg text-sm ${filter === 'flowers' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-          >
-            Flowers
-          </button>
-          <button
-            onClick={() => setFilter('succulents')}
-            className={`px-3 py-2 rounded-lg text-sm ${filter === 'succulents' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-          >
-            Succulents
-          </button>
-        </div> */}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredPlants.map((plant) => (
-          <PlantCard key={plant._id} plant={plant} />
+          <PlantCard 
+            key={plant._id} 
+            plant={plant} 
+          />
         ))}
       </div>
 
