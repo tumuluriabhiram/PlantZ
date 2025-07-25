@@ -223,7 +223,7 @@ const DiseaseDetection = () => {
                   <FaLeaf className="text-green-600 text-xl" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-xl text-gray-800">{result.disease}</h3>
+                  <h3 className="font-bold text-xl text-gray-800">{result.disease.name}</h3>
                   <p className="text-green-600">Confidence: {result.confidence}</p>
                 </div>
               </div>
@@ -231,7 +231,7 @@ const DiseaseDetection = () => {
               <div className="mb-6">
                 <h4 className="font-semibold text-lg text-gray-800 mb-2">Treatment Steps:</h4>
                 <ol className="space-y-3">
-                  {result.treatment.map((step, index) => (
+                  {result.disease.treatment.map((step, index) => (
                     <motion.li 
                       key={index}
                       className="flex items-start"
@@ -248,9 +248,24 @@ const DiseaseDetection = () => {
                 </ol>
               </div>
               
-              <div>
+              <div className="mb-6">
                 <h4 className="font-semibold text-lg text-gray-800 mb-2">Prevention:</h4>
-                <p className="text-gray-700 text-left">{result.prevention}</p>
+                <ol className="space-y-3">
+                  {result.disease.prevention.map((step, index) => (
+                    <motion.li 
+                      key={index}
+                      className="flex items-start"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: 0.1 * index }}
+                    >
+                      <div className="bg-blue-100 text-blue-800 font-semibold rounded-full w-6 h-6 flex items-left justify-center mr-3 flex-shrink-0 mt-0.5">
+                        {index + 1}
+                      </div>
+                      <p className="text-gray-700 text-left">{step}</p>
+                    </motion.li>
+                  ))}
+                </ol>
               </div>
 
               <motion.button
