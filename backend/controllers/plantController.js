@@ -33,7 +33,7 @@ const addPlant = async (req, res) => {
 };
 
 // Update plant with image handling
-const updatePlant = async (req, res) => {
+const updatePlantImage = async (req, res) => {
   try {
     const plant = await Plant.findOne({ 
       _id: req.params.id, 
@@ -286,22 +286,27 @@ const fertilizePlant = async (req, res) => {
   }
 };
 
-const adjustTemperature = async (req, res) => {
-  try {
-    const plant = await updateCareMetric(req.params.id, 'temperature', 15, 'Adjusted temperature');
-    res.status(200).json({
-      status: 'success',
-      data: {
-        plant
-      }
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err.message
+const updatePlant = async (req, res) => {
+  let plantData = req.body.plant;
+
+  const plant = await Plant.updateOne(
+    { _id: plantData._id, user: req.userId },
+    { $set: plantData }
+  );
+
+  if (!plant) {
+    return res.status(404).json({
+      success: false,
+      message: 'Plant not found'
     });
   }
-};
+  else{
+    return res.status(200).json({
+      success: true,
+      data: plantData
+    });
+  }
+}
 
 export default {
   addPlant,
@@ -311,6 +316,6 @@ export default {
   deletePlant,
   waterPlant,
   adjustSunlight,
-  adjustTemperature,
-  fertilizePlant
+  fertilizePlant,
+  updatePlantImage
 };

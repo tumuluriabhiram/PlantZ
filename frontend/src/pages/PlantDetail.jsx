@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -15,19 +15,14 @@ import {
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-
-const potData = {
-  "xsmall": 1,
-  "small": 4,
-  "medium": 9,
-  "large": 15,
-  "xlarge": 25
-}
+import potData from '../data/potData';
+import { AppContent } from '../context/AppContext';
 
 const PlantDetail = () => {
   // Router hooks
   const { plantId } = useParams();
   const navigate = useNavigate();
+  const {plants, setPlants} = useContext(AppContent)
   
   // State management
   const [plant, setPlant] = useState(null);
@@ -35,7 +30,6 @@ const PlantDetail = () => {
   const [error, setError] = useState(null);
   const [actionMessage, setActionMessage] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
-  const [refreshCounter, setRefreshCounter] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showWaterModal, setShowWaterModal] = useState(false);
   const [waterAmount, setWaterAmount] = useState();
@@ -51,34 +45,49 @@ const PlantDetail = () => {
     fertilize: "Yum! Thank you for the nutrients. I'll grow even stronger now!"
   };
 
-  // Fetch plant data
-  useEffect(() => {
-    const fetchPlant = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(`${backendUrl}/api/plants/${plantId}`, {
-          headers: {
-            'Authorization': `Bearer ${authToken}`
+  //Setting up plants
+  useEffect(()=>{
+    if (plants){
+      const selectedPlant = plants.find(item => item._id === plantId);
+      setPlant(selectedPlant);
+    }
+  }, [plants])
+
+  useEffect(()=>{
+    if (plant){
+      setLoading(false)
+    }
+  }, [plant])
+
+
+  useEffect(()=>{
+    return ()=>{
+      if (plant){
+        // Update plants array - keep all other plants the same, only update the current plant
+        setPlants(prevPlants => 
+          prevPlants.map(p => 
+            p._id === plant._id ? plant : p
+          )
+        );
+        
+        axios.put(
+          `${backendUrl}/api/plants/upload/${plant._id}`,
+          { plant },
+          {
+            headers: {
+              'Authorization': `Bearer ${authToken}`
+            },
           }
+        ).catch((err) => {
+          console.log('PUT request error:', err.message);
         });
-        setPlant(response.data.data);
-
-      } catch (err) {
-        setError(err.response?.data?.message || 'Failed to fetch plant details');
-      } finally {
-        setLoading(false);
-        setIsRefreshing(false);
       }
+
+      // console.log(plant)
+
     };
+  }, [plantId, backendUrl, authToken])
 
-    fetchPlant();
-  }, [plantId, authToken, backendUrl, refreshCounter]);
-
-  // Handle refresh functionality
-  const handleRefresh = () => {
-    setIsRefreshing(true);
-    setRefreshCounter(prev => prev + 1);
-  };
 
   // Handle plant care actions
 

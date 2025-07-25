@@ -1,41 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaWater, FaSun, FaLeaf, FaExclamationTriangle } from 'react-icons/fa';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-const PlantCard = ({ plant, fetchPlantDetails }) => {
+
+const PlantCard = ({plant}) => {
+
   const [detailedPlant, setDetailedPlant] = useState(plant);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch detailed plant data if needed
-  useEffect(() => {
-    const fetchDetails = async () => {
-      if (fetchPlantDetails && plant._id) {
-        try {
-          setLoading(true);
-          const response = await axios.get(`/api/plants/${plant._id}`, {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-          });
-          setDetailedPlant(response.data);
-        } catch (err) {
-          console.error('Error fetching plant details:', err);
-          setError('Failed to load plant details');
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-    console.log(detailedPlant);
-    
-
-    fetchDetails();
-  }, [plant._id, fetchPlantDetails]);
+  console.log(plant)
 
   const getStatus = () => {
     const condition = detailedPlant?.condition || 'unknown';
