@@ -56,87 +56,6 @@ const PlantHealthCheck = () => {
 
   // --- API Calls ---
 
-  // Function to get initial suggestions if plant is not healthy
-  const getInitialSuggestions = async (predictionData) => {
-    setChatLoading(true);
-    setChatError(null);
-    // Add a placeholder message
-    setChatMessages([{ sender: 'bot', text: 'Analyzing readings for personalized advice...' }]);
-
-    try {
-       // Include predicted status for better context in the backend prompt
-      const suggestionPayload = {
-          ...formData,
-          predicted_status: predictionData.prediction
-      };
-
-      const response = await fetch('http://localhost:5000/api/suggestions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(suggestionPayload),
-        credentials: 'omit', // Or 'include' if needed and backend CORS allows it for this route
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `API suggestion failed with status ${response.status}`);
-      }
-
-      const data = await response.json();
-      // Replace placeholder with actual suggestion
-      setChatMessages([{ sender: 'bot', text: data.suggestion }]);
-
-    } catch (err) {
-      console.error("Suggestion fetch error:", err);
-      setChatError(`Failed to get suggestions: ${err.message}`);
-      // Keep the error message in the chat
-       setChatMessages([{ sender: 'bot', text: `Sorry, I couldn't get specific advice right now. Error: ${err.message}` }]);
-    } finally {
-      setChatLoading(false);
-    }
-  };
-
-  // Function to handle general chat messages
-  const sendChatMessage = async (message) => {
-    if (!message.trim() || !sessionId) return;
-
-    const newUserMessage = { sender: 'user', text: message };
-    setChatMessages(prev => [...prev, newUserMessage]); // Show user message immediately
-    setChatInput(''); // Clear input
-    setChatLoading(true);
-    setChatError(null);
-
-    try {
-      const response = await fetch('http://localhost:5000/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Session-ID': sessionId, // Send the session ID
-        },
-        body: JSON.stringify({ message: message }),
-        credentials: 'omit', // Or 'include' if needed and backend CORS allows it
-      });
-
-      if (!response.ok) {
-         const errorData = await response.json();
-        throw new Error(errorData.response || `Chat API failed with status ${response.status}`);
-      }
-
-      const data = await response.json();
-      const botMessage = { sender: 'bot', text: data.response };
-      setChatMessages(prev => [...prev, botMessage]); // Add bot response
-
-    } catch (err) {
-       console.error("Chat fetch error:", err);
-      setChatError(`Chat failed: ${err.message}`);
-       // Add error message to chat
-       const errorBotMessage = { sender: 'bot', text: `Sorry, I couldn't respond. Error: ${err.message}` };
-       setChatMessages(prev => [...prev, errorBotMessage]);
-    } finally {
-      setChatLoading(false);
-    }
-  };
-
 
   // Handle form submission for prediction
   const handleSubmit = async (e) => {
@@ -149,7 +68,7 @@ const PlantHealthCheck = () => {
 
     // Basic frontend validation (ensure all fields have numeric values)
     const invalidFields = Object.entries(formData)
-                              .filter(([key, value]) => typeof value !== 'number' || isNaN(value));
+      .filter(([key, value]) => typeof value !== 'number' || isNaN(value));
 
     if (invalidFields.length > 0) {
         setError(`Please enter valid numbers for: ${invalidFields.map(f => f[0]).join(', ')}`);
@@ -159,7 +78,7 @@ const PlantHealthCheck = () => {
 
 
     try {
-      const response = await fetch('http://localhost:5000/api/ml/predict', {
+      const response = await fetch('http://localhost:4000/api/stress', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -173,15 +92,8 @@ const PlantHealthCheck = () => {
 
       const data = await response.json();
       setResult(data);
-
-      // If prediction is successful AND not healthy, get suggestions
-      if (data.prediction && data.prediction.toLowerCase() !== 'healthy') {
-        await getInitialSuggestions(data); // Pass prediction data for context
-      } else {
-         // If healthy, maybe add a simple starting chat message
-         setChatMessages([{ sender: 'bot', text: 'Your plant looks healthy! Do you have any general plant care questions?'}]);
-      }
-
+      console.log(data)
+      
     } catch (err) {
        console.error("Prediction submit error:", err);
       setError(`Prediction failed: ${err.message}`);
@@ -190,30 +102,6 @@ const PlantHealthCheck = () => {
     }
   };
 
-   // Handle sending chat message via button or Enter key
-   const handleChatSend = (e) => {
-     e.preventDefault(); // Prevent page reload if inside a form
-     sendChatMessage(chatInput);
-   };
-
-   const handleChatKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) { // Send on Enter, allow Shift+Enter for newline
-      e.preventDefault();
-      sendChatMessage(chatInput);
-    }
-   };
-
-  // Get appropriate status color based on prediction
-  const getStatusColor = (status) => {
-    if (!status) return 'bg-gray-200';
-    switch (status.toLowerCase()) {
-      case 'healthy': return 'bg-green-500';
-      case 'nutrient deficiency': return 'bg-yellow-500';
-      case 'pest infection': return 'bg-red-500';
-      case 'water stress': return 'bg-blue-500';
-      default: return 'bg-gray-400';
-    }
-  };
 
   return (
     <div className="bg-green-50 min-h-screen p-6 font-sans">
@@ -280,113 +168,34 @@ const PlantHealthCheck = () => {
         )}
 
 
-        {/* --- Results and Chat Section --- */}
-        {result && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8"> {/* Side-by-side layout */}
-
-            {/* Prediction Results */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h2 className="text-xl font-semibold text-gray-700 mb-4">2. Analysis Results</h2>
-              {/* ... (keep existing results display logic) ... */}
-              <div className="flex items-center mb-6">
-                <div className={`w-4 h-4 rounded-full mr-2 ${getStatusColor(result.prediction)}`}></div>
-                <span className="text-lg font-medium text-gray-800">
-                  Status: <span className="font-bold">{result.prediction}</span>
-                </span>
+        {
+          result !== null
+          ?
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">Analysis Result</h2>
+            <div className="flex items-center justify-between bg-gray-50 rounded-lg p-4">
+              <div className="flex items-center">
+                <div className={`w-4 h-4 rounded-full mr-3 ${
+                  result.stress === 'Low Stress' ? 'bg-green-500' :
+                  result.stress === 'Medium Stress' ? 'bg-yellow-500' :
+                  'bg-red-500'
+                }`}></div>
+                <div>
+                  <h3 className="font-medium text-gray-800">{result.stress}</h3>
+                  <p className="text-sm text-gray-600">Plant Stress Level</p>
+                </div>
               </div>
-
-              <div className="mb-4">
-                 <h3 className="text-md font-medium mb-2 text-gray-600">Confidence Levels:</h3>
-                {Object.entries(result.probabilities).map(([status, probability]) => (
-                   <div key={status} className="mb-2">
-                     <div className="flex justify-between mb-1">
-                       <span className="text-sm font-medium text-gray-600">{status}</span>
-                       <span className="text-sm font-medium text-gray-600">
-                         {(probability * 100).toFixed(1)}%
-                       </span>
-                     </div>
-                     <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                        <div
-                          className={`${getStatusColor(status)} h-2.5 rounded-full`}
-                          style={{ width: `${probability * 100}%` }}
-                       ></div>
-                     </div>
-                   </div>
-                 ))}
+              <div className="text-right">
+                <p className="text-lg font-semibold text-gray-800">{result.confidence}%</p>
+                <p className="text-sm text-gray-600">Confidence</p>
               </div>
-               {/* Keep the simplified recommended actions section or remove if chat handles it */}
-              {result.prediction && (
-                 <div className="p-3 bg-indigo-50 rounded-md border border-indigo-200 mt-4">
-                   <h3 className="font-medium text-indigo-800 mb-1 text-sm">Quick Tips Based on Status:</h3>
-                    <ul className="text-xs text-indigo-700 list-disc list-inside">
-                        {/* ... Keep simplified tips ... */}
-                        {result.prediction.toLowerCase() === 'healthy' && ( <li>Keep up the good work!</li> )}
-                        {result.prediction.toLowerCase() === 'nutrient deficiency' && ( <li>Consider balanced fertilizer.</li> )}
-                        {result.prediction.toLowerCase() === 'pest infection' && ( <li>Inspect closely, consider organic pest control.</li> )}
-                        {result.prediction.toLowerCase() === 'water stress' && ( <li>Check soil moisture, adjust watering.</li> )}
-                    </ul>
-                    <p className="text-xs text-indigo-600 mt-1">Chat with the assistant below for detailed advice!</p>
-                 </div>
-              )}
-            </div>
-
-            {/* Chat Section */}
-            <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col"> {/* flex flex-col */}
-              <h2 className="text-xl font-semibold text-gray-700 mb-4">3. Plant Z Assistant</h2>
-                {/* Chat Messages Display */}
-              <div ref={chatContainerRef} className="flex-grow overflow-y-auto h-64 mb-4 border border-gray-200 rounded-md p-3 bg-gray-50 space-y-3"> {/* Added height and scroll */}
-                {chatMessages.map((msg, index) => (
-                  <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-xs lg:max-w-md px-3 py-2 rounded-lg ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}>
-                      <p className="text-sm">{msg.text}</p>
-                    </div>
-                  </div>
-                ))}
-                 {/* Loading indicator for chat */}
-                {chatLoading && (
-                  <div className="flex justify-start">
-                      <div className="bg-gray-200 text-gray-600 px-3 py-2 rounded-lg text-sm animate-pulse">
-                          Thinking...
-                      </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Chat Input */}
-              <form onSubmit={handleChatSend} className="mt-auto"> {/* Push input to bottom */}
-                 {/* Chat Error Message */}
-                {chatError && (
-                    <p className="text-xs text-red-500 mb-2">{chatError}</p>
-                )}
-                <div className="flex items-center border border-gray-300 rounded-md p-1 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
-                   <input
-                     type="text"
-                     value={chatInput}
-                     onChange={(e) => setChatInput(e.target.value)}
-                     onKeyPress={handleChatKeyPress} // Send on Enter
-                     placeholder="Ask about plant care..."
-                     className="flex-grow px-3 py-2 border-none focus:outline-none focus:ring-0 text-sm"
-                     disabled={chatLoading}
-                   />
-                   <button
-                     type="submit"
-                     disabled={chatLoading || !chatInput.trim()}
-                      className={`ml-2 px-4 py-2 rounded-md text-white font-medium transition ${chatLoading || !chatInput.trim() ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`}
-                   >
-                     Send
-                   </button>
-                 </div>
-              </form>
             </div>
           </div>
-        )}
+          :
+          null
+        }
 
       </div> {/* End Max Width Container */}
-
-      {/* Footer */}
-      <div className="mt-12 text-center text-sm text-gray-500">
-        <p>© {new Date().getFullYear()} PlantCare AI. All rights reserved.</p>
-      </div>
     </div>
   );
 };

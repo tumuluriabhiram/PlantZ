@@ -30,7 +30,7 @@ async function getStress(req, res) {
 
   const output_map = ['Low Stress', 'Medium Stress', 'High Stress'];
 
-  res.status(200).json({ message: output_map[max_out] });
+  res.status(200).json({ stress: output_map[max_out], confidence: Math.round(data[max_out]*100) });
 }
 
 export default {

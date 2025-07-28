@@ -5,7 +5,7 @@ import upload from '../config/multer.js';
 const stressRouter = express.Router();
 
 stressRouter
-  .get('/', stressController.getStress)
+  .post('/', stressController.getStress)
   
 
 export default stressRouter;
