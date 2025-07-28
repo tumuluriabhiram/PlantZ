@@ -4,10 +4,12 @@ import PlantTypeSelection from './PlantTypeSelection';
 import PlantDetailsForm from './PLantDetailsForm';
 import SuccessConfirmation from './SuccessConfirmation';
 import ProgressIndicator from './ProgressIndicator';
+
 import { usePlants } from '../../context/PlantContext';
 import { AppContent } from '../../context/AppContext';
+import { RewardsContext } from '../../context/RewardsContext';
+
 import './AddPlantFlow1.css';
-import axios from 'axios'
 import DisplayPlantData from './DisplayPlantData';
 
 const AddPlantFlow = () => {
@@ -20,6 +22,7 @@ const AddPlantFlow = () => {
     fetchPlantTypes,
     addPlant
   } = usePlants();
+  const {addPoints} = useContext(RewardsContext);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -124,6 +127,7 @@ const AddPlantFlow = () => {
 
       const result = await addPlant(plantData);
       console.log('Plant added successfully:', result); // Debug log
+      addPoints(10, "Adding a plant", "Added a Plant")
       setIsSuccess(true);
 
       setTimeout(() => {
