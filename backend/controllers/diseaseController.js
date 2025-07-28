@@ -1,15 +1,9 @@
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
 import sharp from 'sharp';
 import ort from 'onnxruntime-node';
 
 import Disease from '../models/Disease.js';
 
 import diseaseMap from '../models/index_to_class.js';
-import { get } from 'http';
-
-const __filename = fileURLToPath(import.meta.url);
 
 
 async function getDisease(index){

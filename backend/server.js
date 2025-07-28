@@ -10,6 +10,7 @@ import userRouter from './routes/userRoutes.js';
 import plantRouter from "./routes/plantRoutes.js";
 import diseaseRouter from "./routes/diseaseRoutes.js";
 import rewardsRoutes from './routes/rewardsRoutes.js';
+import stressRouter from './routes/stressRoutes.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -48,6 +49,7 @@ app.use('/api/user', userRouter);
 app.use('/api', plantRouter);
 app.use('/api/disease', diseaseRouter);
 app.use('/api/rewards', rewardsRoutes);
+app.use('/api/stress', stressRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

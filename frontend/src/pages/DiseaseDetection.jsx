@@ -279,11 +279,20 @@ const DiseaseDetection = () => {
             </motion.div>
           ) : (
             <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center justify-center min-h-64 border border-gray-200">
-              <h3 className="text-lg font-medium text-gray-800 mb-2">Some Tips For the Image</h3>
               <p className="text-gray-500 text-center">
-                Upload a photo of your plant and click "Analyze Plant" to get disease detection and treatment recommendations.
-                @Ashwin add smth ki image aisi ho, and aise kheecho...
-                Basic instructions for uploading and analyzing the image.
+                <strong>Image Upload Guidelines for Accurate Disease Detection</strong><br/><br/>
+                To ensure the best results from our AI, please follow these tips when capturing or uploading plant leaf images:<br/><br/>
+                <ul className="list-disc pl-6 text-left">
+                  <li><strong>Use natural daylight:</strong> Take photos outdoors or near a window during the day. Avoid using flash or harsh artificial lights, which can distort colors.</li>
+                  <li><strong>Minimize shadows:</strong> Position the leaf so it is evenly lit, with no shadows from your hand, other plants, or objects.</li>
+                  <li><strong>Center and focus:</strong> Hold your camera steady and make sure the leaf is centered in the frame. Tap to focus if using a smartphone.</li>
+                  <li><strong>Show the whole leaf:</strong> Try to capture the entire leaf, including edges and any visible symptoms. Avoid cropping out important areas.</li>
+                  <li><strong>Clean background:</strong> Place the leaf against a plain background (like white paper) to help the AI distinguish the leaf from surroundings.</li>
+                  <li><strong>Avoid glare and reflections:</strong> Tilt the leaf or camera to prevent shiny spots that can obscure details.</li>
+                  <li><strong>Only one leaf per image:</strong> If possible, upload images with a single leaf to reduce confusion.</li>
+                  <li><strong>Do not edit or filter:</strong> Avoid using photo filters or editing tools that change the leaf's natural appearance.</li>
+                </ul>
+                <br/>Following these guidelines will help our AI provide more accurate disease detection and recommendations.
               </p>
             </div>
           )}
