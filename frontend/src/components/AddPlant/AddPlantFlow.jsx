@@ -126,12 +126,13 @@ const AddPlantFlow = () => {
       };
 
       const result = await addPlant(plantData);
-      console.log('Plant added successfully:', result); // Debug log
+      // console.log('Plant added successfully:', result); // Debug log
       addPoints(10, "Adding a plant", "Added a Plant")
       setIsSuccess(true);
 
       setTimeout(() => {
         navigate('/plants');
+        window.location.reload()
       }, 2000);
     } catch (error) {
       console.error('Add plant error:', error); // Debug log

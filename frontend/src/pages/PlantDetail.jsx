@@ -337,13 +337,13 @@ const PlantDetail = () => {
                   loading={actionLoading}
                   color="blue"
                 />
-                <CareButton
+                {/* <CareButton
                   icon={<FaCloudSun />}
                   label="Sunlight"
                   onClick={() => handleCareAction('sunlight')}
                   loading={actionLoading}
                   color="amber"
-                />
+                /> */}
                 <CareButton
                   icon={<FaSeedling />}
                   label="Fertilize"
@@ -377,12 +377,12 @@ const PlantDetail = () => {
                   value={plant.careMetrics?.water || 0}
                   color="blue"
                 />
-                <MetricBar
+                {/* <MetricBar
                   icon={<FaSun className="text-yellow-500" />}
                   label="Sunlight"
                   value={plant.careMetrics?.sunlight || 0}
                   color="yellow"
-                />
+                /> */}
                 <MetricBar
                   icon={<FaLeaf className="text-green-500" />}
                   label="Fertilizer"
