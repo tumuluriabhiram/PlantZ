@@ -10,18 +10,18 @@ const DesktopNavigation = () => {
   const { unreadCount } = useNotifications();
   const { userData } = useContext(AppContent);
   const navItems = [
-    { path: '/dashboard', icon: <Home size={20} />, label: "Home" },
+    { path: '/', icon: <Home size={20} />, label: "Home" },
     { path: userData?"/plants":'/login', icon: <Leaf size={20} />, label: "Plants" },
-    {
-      path: userData?"/notifications":'/login',
-      icon: (
-        <div className="relative">
-          <Bell size={20} />
-          {unreadCount > 0 && <NotificationBadge />}
-        </div>
-      ),
-      label: "Notifications"
-    },
+    // {
+    //   path: userData?"/notifications":'/login',
+    //   icon: (
+    //     <div className="relative">
+    //       <Bell size={20} />
+    //       {unreadCount > 0 && <NotificationBadge />}
+    //     </div>
+    //   ),
+    //   label: "Notifications"
+    // },
     { path: userData?"/profile":'/login', icon: <User size={20} />, label: "Profile" },
     { path: "/health", icon: <BriefcaseMedical size={20} />, label: "Stress Detection" },
     { path: "/disease", icon: <BriefcaseMedical size={20} />, label: "Disease Detection" }
