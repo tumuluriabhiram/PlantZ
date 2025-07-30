@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { FiUser, FiBell, FiMoon, FiSun, FiLock, FiSliders, FiHelpCircle, FiLogOut, FiChevronRight, FiEdit2, FiUpload } from 'react-icons/fi';
@@ -8,25 +8,28 @@ import { FaCamera } from 'react-icons/fa'
 
 const ProfileSettingsPage = () => {
   const { userData } = useContext(AppContent);
-  console.log(userData);
+  const [user, setUser] = useState({})
 
   // User state - in a real app, this would come from your auth context or API
-  const [user, setUser] = useState({
-    name: userData ? userData.name : 'Plant Enthusiast',
-    email: userData ? userData.email : 'plant.lover@example.com',
-    avatar: '/assets/avatars/default-user.png' || "",
-    preferences: {
-      notifications: {
-        waterReminders: true,
-        fertilizerReminders: true,
-        plantTips: true,
-        appUpdates: false,
-      },
-      theme: 'light',
-      language: 'English',
-      measurementUnit: 'Metric',
-    }
-  });
+  useEffect(()=>{
+    setUser ({
+      name: userData ? userData.name : 'Plant Enthusiast',
+      email: userData ? userData.email : 'plant.lover@example.com',
+      avatar: '/assets/avatars/default-user.png' || "",
+      preferences: {
+        notifications: {
+          waterReminders: true,
+          fertilizerReminders: true,
+          plantTips: true,
+          appUpdates: false,
+        },
+        theme: 'light',
+        language: 'English',
+        measurementUnit: 'Metric',
+      }
+    });
+  }, [userData])
+
 
   const [profileImage, setProfileImage] = useState(null);
   const [imageError, setImageError] = useState(false);
