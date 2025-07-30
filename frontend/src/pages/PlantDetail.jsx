@@ -161,6 +161,7 @@ const PlantDetail = () => {
 
       toast.success("Plant removed")
       navigate('/plants')
+      window.location.reload()
     }
 
     catch (err){
