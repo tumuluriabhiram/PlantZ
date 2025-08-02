@@ -51,7 +51,7 @@ const PlantSchema = new mongoose.Schema({
   careMetrics: {
     water: { type: Number, min: 0, max: 100, default: 50 },
     sunlight: { type: Number, min: 0, max: 100, default: 50 },
-    fertilizer: { type: Number, min: 0, max: 100, default: 0 }
+    fertilizer: { type: Number, min: 0, max: 100, default: 50 }
   },
   wateringNeeds: {
     type: Number, // in liters per day

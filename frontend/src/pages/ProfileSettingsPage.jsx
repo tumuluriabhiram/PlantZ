@@ -1,32 +1,36 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { FiUser, FiBell, FiMoon, FiSun, FiLock, FiSliders, FiHelpCircle, FiLogOut, FiChevronRight, FiEdit2, FiUpload } from 'react-icons/fi';
 import { RiPlantLine, RiLeafLine } from 'react-icons/ri';
 import { AppContent } from '../context/AppContext';
 import { FaCamera } from 'react-icons/fa'
+import { Navigate } from 'react-router-dom';
 
 const ProfileSettingsPage = () => {
   const { userData } = useContext(AppContent);
-  console.log(userData);
+  const [user, setUser] = useState({})
 
   // User state - in a real app, this would come from your auth context or API
-  const [user, setUser] = useState({
-    name: userData ? userData.name : 'Plant Enthusiast',
-    email: userData ? userData.email : 'plant.lover@example.com',
-    avatar: '/assets/avatars/default-user.png' || "",
-    preferences: {
-      notifications: {
-        waterReminders: true,
-        fertilizerReminders: true,
-        plantTips: true,
-        appUpdates: false,
-      },
-      theme: 'light',
-      language: 'English',
-      measurementUnit: 'Metric',
-    }
-  });
+  useEffect(()=>{
+    setUser ({
+      name: userData ? userData.name : 'Plant Enthusiast',
+      email: userData ? userData.email : 'plant.lover@example.com',
+      avatar: '/assets/avatars/default-user.png' || "",
+      preferences: {
+        notifications: {
+          waterReminders: true,
+          fertilizerReminders: true,
+          plantTips: true,
+          appUpdates: false,
+        },
+        theme: 'light',
+        language: 'English',
+        measurementUnit: 'Metric',
+      }
+    });
+  }, [userData])
+
 
   const [profileImage, setProfileImage] = useState(null);
   const [imageError, setImageError] = useState(false);
@@ -404,7 +408,7 @@ const ProfileSettingsPage = () => {
               </motion.div>
 
               <motion.div variants={itemVariants} className="space-y-4">
-                <h3 className="font-medium">Font Size</h3>
+                <h3 className="font-medium mb-2">Font Size</h3>
                 <div className="flex items-center">
                   <span className="text-sm mr-3">A</span>
                   <input
@@ -513,7 +517,6 @@ const ProfileSettingsPage = () => {
               </motion.div>
             </motion.div>
           )}
-
           {/* Account Section */}
           {activeSection === 'account' && (
             <motion.div
@@ -525,7 +528,10 @@ const ProfileSettingsPage = () => {
               <motion.h2 variants={itemVariants} className="text-xl font-medium text-gray-800">Account Management</motion.h2>
 
               <motion.div variants={itemVariants} className="space-y-4">
-                <button className="flex items-center justify-between w-full p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                <button 
+                  onClick={() => window.location.href = `${window.location.origin}/reset-password`}
+                  className="flex items-center justify-between w-full p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
+                >
                   <div className="flex items-center">
                     <FiLock className="mr-3 text-gray-600" />
                     <span>Change Password</span>
@@ -581,27 +587,22 @@ const ProfileSettingsPage = () => {
                       </p>
                     </details>
 
-                    <details className="bg-white p-3 rounded-lg shadow-sm">
-                      <summary className="font-medium cursor-pointer">Can I chat with my plants?</summary>
-                      <p className="mt-2 text-gray-600">
-                        Yes! Each plant has a unique personality. Visit your plant's profile and tap the chat button to start a conversation.
-                      </p>
-                    </details>
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <button className="flex items-center justify-between w-full p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                  <button 
+                    onClick={() => window.open('https://github.com/Palash3101/PlantZ')}
+                    className="flex items-center justify-between w-full p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
+                  >
                     <span>Contact Support</span>
                     <FiChevronRight />
                   </button>
 
-                  <button className="flex items-center justify-between w-full p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
-                    <span>View Tutorial</span>
-                    <FiChevronRight />
-                  </button>
-
-                  <button className="flex items-center justify-between w-full p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                  <button 
+                    onClick={() => window.open('https://github.com/Palash3101/PlantZ')}
+                    className="flex items-center justify-between w-full p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
+                  >
                     <span>Report a Bug</span>
                     <FiChevronRight />
                   </button>

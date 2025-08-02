@@ -96,6 +96,7 @@ export const PlantProvider = ({ children }) => {
         toast.success('Plant added successfully!');
         return data.plant;
       }
+
       toast.error(data.message);
       return null;
     } catch (error) {
