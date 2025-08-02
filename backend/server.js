@@ -14,7 +14,7 @@ import stressRouter from './routes/stressRoutes.js';
 import chatRouter from './routes/chatRoutes.js';
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = 4000;
 
 // Validate essential environment variables
 const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET', 'CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'];
