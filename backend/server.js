@@ -31,8 +31,9 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 app.use(cors({
   credentials: true,
-  origin: true,
-  exposedHeaders: ['set-cookie']
+  origin: process.env.NODE_ENV === 'production'
+    ? 'https://plantz-frontend.onrender.com'
+    : 'http://localhost:5173'
 }));
 
 // Database connection

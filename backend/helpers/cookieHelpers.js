@@ -1,6 +1,7 @@
 // backend/helpers/cookieHelpers.js
 export const setAuthCookie = (res, token) => {
   // When you set the cookie, make sure you have these options:
+  console.log(token);
   res.cookie('token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production', // Only use HTTPS in production
