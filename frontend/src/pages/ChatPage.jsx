@@ -61,7 +61,7 @@ const ChatPage = () => {
                 timestamp: new Date().toISOString()
             });
             
-            const response = await axios.post('http://localhost:4000/api/chat', {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/chat`, {
                 message: messageToSend
             }, {
                 headers: {
