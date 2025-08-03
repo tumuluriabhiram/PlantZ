@@ -29,12 +29,31 @@ for (const envVar of requiredEnvVars) {
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
-app.use(cors({
+
+// Enhanced CORS configuration for production
+const corsOptions = {
   credentials: true,
-  origin: process.env.NODE_ENV === 'production'
-    ? 'https://plantz-frontend.onrender.com'
-    : 'http://localhost:5173'
-}));
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = process.env.NODE_ENV === 'production'
+      ? ['https://plantz-frontend.onrender.com']
+      : ['http://localhost:5173', 'http://localhost:3000'];
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('Blocked by CORS:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+  exposedHeaders: ['Set-Cookie']
+};
+
+app.use(cors(corsOptions));
 
 // Database connection
 connectDB().then(() => {
