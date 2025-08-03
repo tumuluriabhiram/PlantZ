@@ -5,9 +5,8 @@ export const setAuthCookie = (res, token) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production', // Only use HTTPS in production
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // For cross-site requests in production
-    domain: process.env.NODE_ENV === 'production' ? 'pixelpirates.vercel.app' : 'localhost', // Adjust to your domain
-    path: '/',
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    domain: process.env.NODE_ENV === 'production' ? 'https://plantz-frontend.onrender.com' : 'localhost', // Adjust to your domain
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   });
 };
 
