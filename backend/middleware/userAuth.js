@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 const userAuth = async (req, res, next) => {
-    console.log('Cookies received:', req.cookies);
+    // console.log('Cookies received:', req.cookies);
     const { token } = req.cookies;
 
     if (!token) {
@@ -10,9 +10,9 @@ const userAuth = async (req, res, next) => {
     }
 
     try {
-        console.log('Attempting to verify token...');
+        // console.log('Attempting to verify token...');
         const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
-        console.log('Token verification result:', tokenDecode);
+        // console.log('Token verification result:', tokenDecode);
 
         if (tokenDecode.id) {
             // Set userId on the req object itself

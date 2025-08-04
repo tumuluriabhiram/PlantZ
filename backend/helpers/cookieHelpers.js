@@ -1,8 +1,5 @@
 // backend/helpers/cookieHelpers.js
 export const setAuthCookie = (res, token) => {
-  console.log('Setting auth cookie with token:', token);
-  console.log('Environment:', process.env.NODE_ENV);
-  
   const isProduction = process.env.NODE_ENV === 'production';
   
   const cookieOptions = {
@@ -13,7 +10,6 @@ export const setAuthCookie = (res, token) => {
     // Don't set domain for cross-origin cookies - let the browser handle it
   };
   
-  console.log('Cookie options:', cookieOptions);
   res.cookie('token', token, cookieOptions);
 };
 

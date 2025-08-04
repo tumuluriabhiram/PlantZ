@@ -44,8 +44,8 @@ export const register = [
             const welcomeMailOptions = {
                 from: process.env.SENDER_EMAIL,
                 to: email,
-                subject: 'Welcome to MoodUp',
-                text: `Welcome to MoodUp website. Your account has been created with email id: ${email}`,
+                subject: 'Welcome to PlantZ',
+                text: `Welcome to PlantZ website. Your account has been created with email id: ${email}`,
             };
 
             await transporter.sendMail(welcomeMailOptions);

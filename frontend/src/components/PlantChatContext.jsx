@@ -10,7 +10,20 @@ export const PlantChatProvider = ({ children }) => {
 
   // Add a message to the chat
   const addMessage = useCallback((message) => {
-    setMessages(prevMessages => [...prevMessages, message]);
+    setMessages(prevMessages => {
+      // If adding a non-typing message, remove any existing typing indicators first
+      if (message.sender !== 'typing') {
+        const filteredMessages = prevMessages.filter(msg => msg.id !== 'typing');
+        return [...filteredMessages, message];
+      }
+      // If it's a typing message, just add it normally
+      return [...prevMessages, message];
+    });
+  }, []);
+
+  // Remove typing indicator
+  const removeTypingIndicator = useCallback(() => {
+    setMessages(prevMessages => prevMessages.filter(msg => msg.id !== 'typing'));
   }, []);
 
   // Clear all messages
@@ -28,6 +41,7 @@ export const PlantChatProvider = ({ children }) => {
     messages,
     addMessage,
     clearMessages,
+    removeTypingIndicator,
     currentPlant,
     setPlant
   };
