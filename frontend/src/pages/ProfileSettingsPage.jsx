@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import { FiUser, FiBell, FiMoon, FiSun, FiLock, FiSliders, FiHelpCircle, FiLogOut, FiChevronRight, FiEdit2, FiUpload } from 'react-icons/fi';
-import { RiPlantLine, RiLeafLine } from 'react-icons/ri';
+import { FiUser, FiBell,FiLock,FiHelpCircle, FiLogOut, FiChevronRight, FiUpload } from 'react-icons/fi';
 import { AppContent } from '../context/AppContext';
-import { FaCamera } from 'react-icons/fa'
-import { Navigate } from 'react-router-dom';
+import { FaCamera } from 'react-icons/fa';
+import axios from 'axios';
 
 const ProfileSettingsPage = () => {
   const { userData } = useContext(AppContent);
@@ -14,8 +13,9 @@ const ProfileSettingsPage = () => {
   // User state - in a real app, this would come from your auth context or API
   useEffect(()=>{
     setUser ({
-      name: userData ? userData.name : 'Plant Enthusiast',
-      email: userData ? userData.email : 'plant.lover@example.com',
+      name: userData.name ,
+      email: userData.email ,
+      about:userData.about,
       avatar: '/assets/avatars/default-user.png' || "",
       preferences: {
         notifications: {
@@ -24,9 +24,6 @@ const ProfileSettingsPage = () => {
           plantTips: true,
           appUpdates: false,
         },
-        theme: 'light',
-        language: 'English',
-        measurementUnit: 'Metric',
       }
     });
   }, [userData])
@@ -55,6 +52,23 @@ const ProfileSettingsPage = () => {
       reader.readAsDataURL(file);
     }
   };
+
+
+  async function handleSettingsSave(){
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/update`,
+        user,
+        { withCredentials: true }
+      );
+      
+      if (response) toast.success('Profile updated successfully!');
+
+    } catch (error) {
+      toast.error('Failed to update profile.');
+      console.error(error);
+    }
+  }
 
   // State for active section
   const [activeSection, setActiveSection] = useState('profile');
@@ -165,7 +179,7 @@ const ProfileSettingsPage = () => {
                 <FiChevronRight className="ml-auto" />
               </button>
             </motion.li> */}
-            <motion.li variants={itemVariants}>
+            {/* <motion.li variants={itemVariants}>
               <button
                 onClick={() => setActiveSection('preferences')}
                 className={`flex items-center w-full p-3 rounded-lg text-left ${activeSection === 'preferences' ? 'bg-green-100 text-green-800' : 'hover:bg-gray-100'}`}
@@ -174,7 +188,7 @@ const ProfileSettingsPage = () => {
                 <span>Preferences</span>
                 <FiChevronRight className="ml-auto" />
               </button>
-            </motion.li>
+            </motion.li> */}
             <motion.li variants={itemVariants}>
               <button
                 onClick={() => setActiveSection('account')}
@@ -268,12 +282,17 @@ const ProfileSettingsPage = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">About</label>
                   <textarea
                     rows="3"
-                    placeholder="Tell us about your plant journey..."
+                    value={user.about || ''}
+                    placeholder="Tell us more about your journey..."
+                    onChange={(e)=>setUser({...user, about: e.target.value})}
                     className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                   ></textarea>
                 </div>
 
-                <button className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                <button 
+                  className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  onClick={handleSettingsSave}
+                >
                   Save Changes
                 </button>
               </motion.div>
