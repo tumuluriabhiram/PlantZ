@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const ChatPage = () => {
     const { plantId } = useParams();
-    const { currentPlant, messages, isTyping, addMessage, clearMessages } = usePlantChat();
+    const { currentPlant, messages, isTyping, addMessage, clearMessages, removeTypingIndicator } = usePlantChat();
     const [isLoading, setIsLoading] = useState(true);
     const [userInput, setUserInput] = useState('');
     const [error, setError] = useState(null);
@@ -18,21 +18,61 @@ const ChatPage = () => {
         messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-    // Format message text - Convert markdown-style formatting to normal text
+    // Format message text - Convert markdown-style formatting to properly formatted text
     const formatBotMessage = (text) => {
         if (!text) return '';
         
-        // Replace markdown patterns with plain text
-        // Remove ** surrounding text (bold formatting)
-        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '$1');
+        let formattedText = text;
         
-        // Remove * surrounding text (italic formatting)
-        formattedText = formattedText.replace(/\*(.*?)\*/g, '$1');
+        // Clean up excessive whitespace but preserve intentional line breaks
+        formattedText = formattedText.replace(/\n{3,}/g, '\n\n');
+        formattedText = formattedText.replace(/[ \t]{2,}/g, ' ');
         
-        // Remove # symbols (header formatting)
-        formattedText = formattedText.replace(/#{1,6}\s/g, '');
+        // Remove markdown headers but keep the text with proper spacing
+        formattedText = formattedText.replace(/#{1,6}\s*/g, '');
+        
+        // Convert bold markdown to HTML bold tags (preserve ** formatting)
+        formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Convert italic/emphasis markdown to HTML bold tags (preserve * formatting)
+        formattedText = formattedText.replace(/\*(.*?)\*/g, '<strong>$1</strong>');
+        
+        // Remove code block markers but keep the content
+        formattedText = formattedText.replace(/```[\w]*\n?/g, '');
+        formattedText = formattedText.replace(/`(.*?)`/g, '$1');
+        
+        // Preserve numbered lists - keep them as is with proper spacing
+        formattedText = formattedText.replace(/^\s*(\d+)\.\s+/gm, '$1. ');
+        
+        // Clean up bullet points but preserve them
+        formattedText = formattedText.replace(/^\s*[-+]\s+/gm, '• ');
+        
+        // Remove any remaining markdown links but keep the text
+        formattedText = formattedText.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+        
+        // Clean up any remaining special markdown characters except preserved ones
+        formattedText = formattedText.replace(/[_~`]/g, '');
+        
+        // Fix spacing around punctuation
+        formattedText = formattedText.replace(/\s+([.!?])/g, '$1');
+        formattedText = formattedText.replace(/([.!?])\s{2,}/g, '$1 ');
+        
+        // Remove leading/trailing whitespace and normalize line breaks
+        formattedText = formattedText.trim();
+        formattedText = formattedText.replace(/\n\s*\n/g, '\n\n');
         
         return formattedText;
+    };
+
+    // Render formatted text with proper line breaks and HTML formatting
+    const renderFormattedText = (text) => {
+        if (!text) return null;
+        
+        return text.split('\n').map((line, index) => (
+            <div key={index} className={index > 0 ? 'mt-1' : ''}>
+                <span dangerouslySetInnerHTML={{ __html: line }} />
+            </div>
+        ));
     };
 
     // Handle sending messages to backend
@@ -71,10 +111,8 @@ const ChatPage = () => {
                 withCredentials: true
             });
             
-            // Remove typing indicator
-            const newMessages = messages.filter(msg => msg.id !== 'typing');
-            clearMessages();
-            newMessages.forEach(msg => addMessage(msg));
+            // Remove typing indicator by filtering it out
+            removeTypingIndicator();
             
             // Extract the text response from the Gemini API response
             let botResponse = '';
@@ -87,7 +125,7 @@ const ChatPage = () => {
                 botResponse = "I'm having trouble understanding right now. Please try again.";
             }
             
-            // Format and add the bot response to chat
+            // Add the bot response to chat without clearing existing messages
             addMessage({
                 id: Date.now() + 1,
                 text: formatBotMessage(botResponse),
@@ -98,9 +136,7 @@ const ChatPage = () => {
             console.error('Error sending message:', err);
             
             // Remove typing indicator if present
-            const newMessages = messages.filter(msg => msg.id !== 'typing');
-            clearMessages();
-            newMessages.forEach(msg => addMessage(msg));
+            removeTypingIndicator();
             
             // Show error in chat
             addMessage({
@@ -119,9 +155,8 @@ const ChatPage = () => {
     // Quick reply options
     const quickReplies = [
         "How should I water my plants?",
-        "Do you need more light?",
         "What's a plant's ideal temperature?",
-        "How's the wether like today'?"
+        "What is the optimum weather for my plant?"
     ];
 
     const handleQuickReply = (reply) => {
@@ -227,7 +262,9 @@ const ChatPage = () => {
                                       : 'bg-white text-gray-800 rounded-bl-md border border-gray-200'
                               }`}
                           >
-                              <p className="leading-relaxed">{msg.text}</p>
+                              <div className="leading-relaxed">
+                                  {renderFormattedText(msg.text)}
+                              </div>
                               <div className={`text-xs mt-2 ${
                                   msg.sender === 'user' ? 'text-green-100' : 'text-gray-500'
                               }`}>
