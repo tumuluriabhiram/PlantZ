@@ -9,17 +9,17 @@ const PlantHealthCheck = () => {
 
   // Initial hardcoded data matching the format needed by the API
   const initialData = {
-    Soil_Moisture: 25.0,
-    Ambient_Temperature: 22.5,
-    Soil_Temperature: 20.0,
-    Humidity: 60.0,
-    Light_Intensity: 500.0,
-    Soil_pH: 6.5,
-    Nitrogen_Level: 30.0,
-    Phosphorus_Level: 25.0,
-    Potassium_Level: 35.0,
-    Chlorophyll_Content: 40.0,
-    Electrochemical_Signal: 1.5,
+    'Soil_Moisture(%VWC)': 25.0,
+    'Ambient_Temperature(°C)': 22.5,
+    'Soil_Temperature(°C)': 20.0,
+    'Humidity(%relative humidity)': 60.0,
+    'Light_Intensity(µmol/m²/s)': 500.0,
+    'Soil_pH(pH)': 6.5,
+    'Nitrogen_Level(ppm)': 30.0,
+    'Phosphorus_Level(ppm)': 25.0,
+    'Potassium_Level(ppm)': 35.0,
+    'Chlorophyll_Content(µg/cm²)': 40.0,
+    'Electrochemical_Signal(mV)': 1.5,
   };
 
   const [formData, setFormData] = useState(initialData);
