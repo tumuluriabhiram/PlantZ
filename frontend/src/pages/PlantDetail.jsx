@@ -9,8 +9,7 @@ import {
   FaTint,
   FaCloudSun,
   FaSeedling,
-  FaTrash,
-  FaSortAmountDown
+  FaTrash
 } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -115,11 +114,12 @@ const PlantDetail = () => {
     const amountNum = parseFloat(amount);
     waterLevel += amountNum;
     const percentage = Math.round((waterLevel / potQuantity) * 100);
+
     setPlant(prevPlant => ({
       ...prevPlant,
       careMetrics: {
         ...prevPlant.careMetrics,
-        water: percentage
+        water: percentage>100?100:percentage
       },
       lastWatered: new Date().toISOString()
     }));
@@ -175,46 +175,32 @@ const PlantDetail = () => {
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div 
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.2 }}
-          className="bg-white rounded-2xl p-6 w-96 shadow-xl"
-          key="water-modal"
-        >
-          <div className="modal-content">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">How much water did you add?</h3>
-            <div className="mb-4">
-              <input
-                type="number"
-                value={waterAmount || ''}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setWaterAmount(value);
-                }}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="Enter amount in litre"
-              />
-            </div>
-            <div className="flex justify-end gap-3">
-              <button
-                type="button"
-                onClick={() => setShowWaterModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowWaterModal(false);
-                  handleCareAction('water', waterAmount);
-                }}
-                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-              >
-                Confirm
-              </button>
-            </div>
+        <div className="bg-white rounded-2xl p-4 w-64 shadow-xl">
+          <input
+            type="text"
+            value={waterAmount || ''}
+            onChange={(e) => setWaterAmount(e.target.value)}
+            className="w-full px-2 py-2 border border-gray-300 rounded-lg mb-2"
+            placeholder="Amount in litre..."
+          />
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => setShowWaterModal(false)}
+              className="px-2 py-1 text-gray-600 hover:text-gray-800"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setShowWaterModal(false);
+                handleCareAction('water', waterAmount);
+              }}
+              className="px-2 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
+            >
+              Confirm
+            </button>
           </div>
         </div>
       </div>
@@ -330,7 +316,7 @@ const PlantDetail = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="grid grid-cols-3 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <CareButton
                   icon={<FaTint />}
                   label="Water"

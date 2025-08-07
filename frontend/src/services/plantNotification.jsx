@@ -34,6 +34,30 @@ export function WaterChange(plants){
     const currentWaterLevel = data.careMetrics.water*potData[data.potSize]/100;
     const LevelChange = Math.round(diffHours*decreaseRate/24)
 
-    data.careMetrics.water = Math.round((currentWaterLevel-LevelChange)/potData[data.potSize]*100);
+    const metric = Math.round((currentWaterLevel-LevelChange)/potData[data.potSize]*100);
+
+    if (metric<=0){
+      data.careMetrics.water = 0;
+      data.condition="struggling"
+    }
+    else if (metric<=100){
+      data.careMetrics.water = metric;
+      if (metric<20){
+        data.condition='struggling'
+      }
+      else if (metric<40){
+        data.condition='needsAttention'
+      }
+      else if (metric<80){
+        data.condition='healthy'
+      }
+      else {
+        data.condition='thriving'
+      }
+    }
+    else{
+      data.careMetrics.water = 100;
+    }
+
   });
 }

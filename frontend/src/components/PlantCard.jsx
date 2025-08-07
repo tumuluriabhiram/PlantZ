@@ -13,7 +13,7 @@ const PlantCard = ({plant}) => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  console.log(plant)
+  // console.log(plant)
 
   const getStatus = () => {
     const condition = detailedPlant?.condition || 'unknown';
