@@ -44,7 +44,15 @@ const PlantTypeSelection = ({ selectedType, onSelect, error }) => {
             >
               <div className="flex justify-center mb-2 h-24">
                 <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden">
-                  <span className="text-3xl">{type.name?.charAt(0) || '🌱'}</span>
+                  {type.image ? (
+                    <img
+                      src={type.image}
+                      alt={type.name}
+                      className="object-cover w-full h-full"
+                    />
+                  ) : (
+                    <span className="text-3xl">{type.name?.charAt(0) || '🌱'}</span>
+                  )}
                 </div>
               </div>
               <h3 className="font-medium">{type.name || 'Unknown Plant'}</h3>

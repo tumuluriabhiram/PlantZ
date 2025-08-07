@@ -1,5 +1,8 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-
+import greenThumbLogo from '../assets/sponsor_icons/green_thumb.jpg';
+import ecoPlanterLogo from '../assets/sponsor_icons/EcoPlanter.png';
+import terrariumWorldLogo from '../assets/sponsor_icons/terrarium_world.png';
+// Add more imports for other sponsors as needed
 // Create the rewards context
 export const RewardsContext = createContext();
 
@@ -15,21 +18,21 @@ export const RewardsProvider = ({ children }) => {
       id: 'v1',
       sponsor: 'GreenThumb',
       description: '10% off any plant purchase',
-      image: '/api/placeholder/80/80',
+      image: greenThumbLogo,
       pointsCost: 100,
     },
     {
       id: 'v2',
       sponsor: 'EcoPlanter',
       description: 'Free organic fertilizer sample',
-      image: '/api/placeholder/80/80',
+      image: ecoPlanterLogo,
       pointsCost: 50,
     },
     {
       id: 'v3',
       sponsor: 'Terrarium World',
       description: '$5 off your next purchase',
-      image: '/api/placeholder/80/80',
+      image: terrariumWorldLogo,
       pointsCost: 75,
     }
   ]);

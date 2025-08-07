@@ -1,3 +1,23 @@
+import appleImg from '../assets/plant_icons/Apple.jpeg';
+import cornImg from '../assets/plant_icons/Corn.jpg';
+import blueberryImg from '../assets/plant_icons/Blueberry.jpg';
+import cherryImg from '../assets/plant_icons/Cherry.jpg';
+import garlicImg from '../assets/plant_icons/Garlic.jpg';
+import grapeImg from '../assets/plant_icons/Grape.jpg';
+import orangeImg from '../assets/plant_icons/Orange.jpg';
+import peachImg from '../assets/plant_icons/Peach.jpg';
+import pepperImg from '../assets/plant_icons/Pepperbell.jpg';
+import potatoImg from '../assets/plant_icons/Potato.jpg';
+import raspberryImg from '../assets/plant_icons/Raspberry.jpg';
+import soybeanImg from '../assets/plant_icons/Soybean.jpg';
+import strawberryImg from '../assets/plant_icons/Strawberry.jpg';
+import tomatoImg from '../assets/plant_icons/Tomato.jpg';
+import teaImg from '../assets/plant_icons/Tea.png';
+import cabbageImg from '../assets/plant_icons/Cabbage.jpg';
+import gingerImg from '../assets/plant_icons/Ginger.jpg';
+import lemonImg from '../assets/plant_icons/Lemon.jpg';
+import onionImg from '../assets/plant_icons/Onion.jpg';
+
 const plantData = [
   {
     "id": "apple",
@@ -12,7 +32,8 @@ const plantData = [
       "medium": 10.0,
       "large": 15.0,
       "xlarge": 25.0
-    }
+    },
+     "image": appleImg
   },
   {
     "id": "corn",
@@ -27,7 +48,8 @@ const plantData = [
       "medium": 3.5,
       "large": 5.0,
       "xlarge": 7.0
-    }
+    },
+    "image": cornImg
   },
   {
     "id": "blueberry",
@@ -42,7 +64,8 @@ const plantData = [
       "medium": 3.5,
       "large": 5.0,
       "xlarge": 7.0
-    }
+    },
+    "image": blueberryImg
   },
   {
     "id": "cherry",
@@ -57,7 +80,8 @@ const plantData = [
       "medium": 10.0,
       "large": 15.0,
       "xlarge": 25.0
-    }
+    },
+    "image": cherryImg
   },
   {
     "id": "garlic",
@@ -72,7 +96,8 @@ const plantData = [
       "medium": 0.6,
       "large": 0.8,
       "xlarge": 1.0
-    }
+    },
+    "image": garlicImg
   },
   {
     "id": "grape",
@@ -87,7 +112,8 @@ const plantData = [
       "medium": 6.0,
       "large": 10.0,
       "xlarge": 15.0
-    }
+    },
+    "image": grapeImg
   },
   {
     "id": "orange",
@@ -102,7 +128,8 @@ const plantData = [
       "medium": 12.0,
       "large": 20.0,
       "xlarge": 35.0
-    }
+    },
+    "image": orangeImg
   },
   {
     "id": "peach",
@@ -117,7 +144,8 @@ const plantData = [
       "medium": 10.0,
       "large": 15.0,
       "xlarge": 25.0
-    }
+    },
+    "image": peachImg
   },
   {
     "id": "pepper",
@@ -132,7 +160,8 @@ const plantData = [
       "medium": 2.8,
       "large": 4.0,
       "xlarge": 5.5
-    }
+    },
+    "image": pepperImg
   },
   {
     "id": "potato",
@@ -147,7 +176,8 @@ const plantData = [
       "medium": 2.8,
       "large": 4.0,
       "xlarge": 5.5
-    }
+    },
+    "image": potatoImg
   },
   {
     "id": "raspberry",
@@ -162,7 +192,8 @@ const plantData = [
       "medium": 3.5,
       "large": 5.0,
       "xlarge": 7.0
-    }
+    },
+    "image": raspberryImg
   },
   {
     "id": "soybean",
@@ -177,7 +208,8 @@ const plantData = [
       "medium": 1.8,
       "large": 2.5,
       "xlarge": 3.5
-    }
+    },
+    "image": soybeanImg
   },
   {
     "id": "strawberry",
@@ -192,7 +224,8 @@ const plantData = [
       "medium": 2.0,
       "large": 3.0,
       "xlarge": 4.0
-    }
+    },
+    "image": strawberryImg
   },
   {
     "id": "tomato",
@@ -207,7 +240,8 @@ const plantData = [
       "medium": 3.5,
       "large": 5.0,
       "xlarge": 7.0
-    }
+    },
+    "image": tomatoImg
   },
   {
     "id": "tea",
@@ -222,7 +256,8 @@ const plantData = [
       "medium": 2.8,
       "large": 4.0,
       "xlarge": 5.5
-    }
+    },
+    "image": teaImg
   },
   {
     "id": "cabbage",
@@ -237,7 +272,8 @@ const plantData = [
       "medium": 2.8,
       "large": 4.0,
       "xlarge": 5.5
-    }
+    },
+    "image": cabbageImg
   },
   {
     "id": "ginger",
@@ -252,7 +288,8 @@ const plantData = [
       "medium": 3.5,
       "large": 5.0,
       "xlarge": 7.0
-    }
+    },
+    "image": gingerImg
   },
   {
     "id": "lemon",
@@ -267,7 +304,8 @@ const plantData = [
       "medium": 12.0,
       "large": 20.0,
       "xlarge": 35.0
-    }
+    },
+    "image": lemonImg
   },
   {
     "id": "onion",
@@ -282,7 +320,8 @@ const plantData = [
       "medium": 0.6,
       "large": 0.8,
       "xlarge": 1.0
-    }
+    },
+    "image": onionImg
   }
 ]
 
